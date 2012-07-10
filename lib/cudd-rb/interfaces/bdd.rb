@@ -6,14 +6,14 @@ module Cudd
       #
       # @see Cudd_ReadZero
       def zero
-        @zero ||= _bdd(Wrapper.ReadZero(_ddManager))
+        @zero ||= _bdd(Wrapper.ReadZero(native_manager))
       end
 
       # Returns the bdd ONE
       #
       # @see Cudd_ReadOne
       def one
-        @one ||= _bdd(Wrapper.ReadOne(_ddManager))
+        @one ||= _bdd(Wrapper.ReadOne(native_manager))
       end
 
     private

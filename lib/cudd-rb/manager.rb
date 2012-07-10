@@ -9,23 +9,36 @@ module Cudd
     # Creates a manager instance.
     #
     # @api private
-    def initialize(options)
-      @options   = options.dup
-      bdd_vars   = (@options[:numVars]   ||= 0)
-      zdd_vars   = (@options[:numVarsZ]  ||= 0)
-      num_slots  = (@options[:numSlots]  ||= 256)
-      cache_size = (@options[:cacheSize] ||= 262144)
-      max_mem    = (@options[:maxMemory] ||= 0)
-      @ddManager = Wrapper.Init(bdd_vars, zdd_vars, num_slots, cache_size, max_mem)
-      raise Cudd::Error, "Unable to create a manager" unless @ddManager
-      ObjectSpace.define_finalizer(self, lambda{|d| d.close})
+    def initialize(*args)
+      args.each do |arg|
+        @options       = arg if arg.is_a?(Hash)
+        @root_manager   = arg if arg.is_a?(Manager)
+        @native_manager = arg if arg.is_a?(FFI::Pointer)
+      end
+    end
+
+    # Creates a root manager by invoking `Cudd_Init`
+    #
+    # @api private
+    def self.root(options)
+      options    = options.dup
+      bdd_vars   = (options[:numVars]   ||= 0)
+      zdd_vars   = (options[:numVarsZ]  ||= 0)
+      num_slots  = (options[:numSlots]  ||= 256)
+      cache_size = (options[:cacheSize] ||= 262144)
+      max_mem    = (options[:maxMemory] ||= 0)
+      native_manager = Wrapper.Init(bdd_vars, zdd_vars, num_slots, cache_size, max_mem)
+      raise Cudd::Error, "Unable to create a manager" unless native_manager
+      Manager.new(options, native_manager).tap do |m|
+        ObjectSpace.define_finalizer(m, lambda{|d| d.close})
+      end
     end
 
     # Closes this manager by invoking `Cudd_Quit`.
     def close
-      Wrapper.Quit(@ddManager) if @ddManager
+      Wrapper.Quit(@native_manager) if @native_manager
     ensure
-      @ddManager = nil
+      @native_manager = nil
     end
 
     # Is this manager alive?
@@ -35,20 +48,24 @@ module Cudd
     #
     # @api public
     def alive?
-      !@ddManager.nil?
+      !@native_manager.nil?
     end
 
     # Returns true if this manager has already been closed, false otherwise.
     #
     # @api public
     def closed?
-      @ddManager.nil?
+      @native_manager.nil?
     end
 
   private
 
-    def _ddManager
-      @ddManager
+    def root_manager
+      @root_manager || self
+    end
+
+    def native_manager
+      @native_manager
     end
 
   end # class Manager

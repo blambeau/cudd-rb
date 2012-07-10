@@ -24,7 +24,7 @@ module Cudd
   #
   # @see Cudd_init
   def self.manager(opts = {})
-    manager = Manager.new(opts.dup)
+    manager = Manager.root(opts.dup)
     if block_given?
       begin
         yield(manager)
