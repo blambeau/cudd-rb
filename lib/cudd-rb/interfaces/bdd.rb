@@ -31,6 +31,27 @@ module Cudd
         _bdd(Wrapper.bddNewVar(native_manager))
       end
 
+      # Returns the negation of a BDD.
+      #
+      # @see Cudd_bddNot
+      def not(f)
+        _bdd(Wrapper.bddNot(native_manager, f))
+      end
+
+      # Returns the conjunction of two BDDs.
+      #
+      # @see Cudd_bddAnd
+      def and(f, g)
+        _bdd(Wrapper.bddAnd(native_manager, f, g))
+      end
+
+      # Returns the disjunction of two BDDs.
+      #
+      # @see Cudd_bddOr
+      def or(f, g)
+        _bdd(Wrapper.bddOr(native_manager, f, g))
+      end
+
     private
 
       def _bdd(pointer)
