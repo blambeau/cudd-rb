@@ -1,5 +1,7 @@
+require_relative 'interfaces/root'
 module Cudd
   class Manager
+    include Interface::Root
 
     # Options passed at construction.
     attr_reader :options
@@ -43,17 +45,11 @@ module Cudd
       @ddManager.nil?
     end
 
-    # Returns an extension interface for a given name.
-    def interface(name)
-      mod = Cudd::Interface.const_get(name)
-      dup.extend(mod)
+  private
+
+    def _ddManager
+      @ddManager
     end
-
-    private
-
-      def _ddManager
-        @ddManager
-      end
 
   end # class Manager
 end # module Cudd
