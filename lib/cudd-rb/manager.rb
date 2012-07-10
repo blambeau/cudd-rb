@@ -43,5 +43,18 @@ module Cudd
       @ddManager.nil?
     end
 
+    # Returns an extension interface for a given name.
+    def interface(name)
+      mod = Cudd::Interface.const_get(name)
+      dup.extend(mod)
+    end
+
+    private
+
+      def _ddManager
+        @ddManager
+      end
+
   end # class Manager
 end # module Cudd
+require_relative 'interfaces/bdd'

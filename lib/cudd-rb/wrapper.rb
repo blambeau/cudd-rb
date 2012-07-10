@@ -6,11 +6,11 @@ module Cudd
     attach_function :Init, :Cudd_Init, [:uint, :uint, :uint, :uint, :ulong], :pointer
     attach_function :Quit, :Cudd_Quit, [:pointer], :void
 
+    attach_function :ReadZero, :Cudd_ReadZero, [ :pointer ], :pointer
+    attach_function :ReadOne,  :Cudd_ReadOne,  [ :pointer ], :pointer
+
     attach_function :ref,   :Cudd_Ref,   [ :pointer ], :void
     attach_function :deref, :Cudd_Deref, [ :pointer ], :void
-
-    attach_function :zero, :Cudd_ReadZero, [ :pointer ], :pointer
-    attach_function :one,  :Cudd_ReadOne,  [ :pointer ], :pointer
 
     attach_function :bdd_ith_var, :Cudd_bddIthVar, [ :pointer, :int ], :pointer
     attach_function :bdd_new_var, :Cudd_bddNewVar, [ :pointer ], :pointer
