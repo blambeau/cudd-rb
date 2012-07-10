@@ -16,6 +16,21 @@ module Cudd
         @one ||= _bdd(Wrapper.ReadOne(native_manager))
       end
 
+      # Returns the BDD variable with index i.
+      #
+      # @param [Integer] i a variable index
+      # @see Cudd_bddIthVar
+      def ith_var(i)
+        _bdd(Wrapper.bddIthVar(native_manager, i))
+      end
+
+      # Returns a new BDD variable.
+      #
+      # @see Cudd_bddNewVar
+      def new_var
+        _bdd(Wrapper.bddNewVar(native_manager))
+      end
+
     private
 
       def _bdd(pointer)
