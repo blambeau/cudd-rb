@@ -58,14 +58,19 @@ module Cudd
       @native_manager.nil?
     end
 
-  private
-
-    def root_manager
-      @root_manager || self
-    end
-
+    # Returns the native manager, that is, a FFI::Pointer to the CUDD's
+    # `DdManager`.
+    #
+    # @api public
     def native_manager
       @native_manager
+    end
+
+  private
+
+    # @api private
+    def root_manager
+      @root_manager || self
     end
 
   end # class Manager
