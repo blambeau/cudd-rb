@@ -27,5 +27,10 @@ module Cudd
     it 'is not equal to another one' do
       subject.should_not eq(interface.ith_var(1))
     end
+
+    it 'is satisfiable and not a tautology' do
+      subject.should be_satisfiable
+      subject.should_not be_tautology
+    end
   end
 end

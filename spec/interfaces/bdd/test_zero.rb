@@ -19,5 +19,10 @@ module Cudd
     it 'is not one' do
       subject.should_not be_one
     end
+
+    it 'is not satisfiable and not a tautology' do
+      subject.should_not be_satisfiable
+      subject.should_not be_tautology
+    end
   end
 end

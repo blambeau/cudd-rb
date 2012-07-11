@@ -19,5 +19,10 @@ module Cudd
     it 'is not zero' do
       subject.should_not be_zero
     end
+
+    it 'is satisfiable and a tautology' do
+      subject.should be_satisfiable
+      subject.should be_tautology
+    end
   end
 end
