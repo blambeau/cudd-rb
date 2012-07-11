@@ -1,3 +1,4 @@
+require 'spec_helper'
 module Cudd
   describe Interface::BDD, 'not' do
 
