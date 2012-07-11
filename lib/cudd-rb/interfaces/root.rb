@@ -8,15 +8,11 @@ module Cudd
 
       # Returns an extension interface for a given name.
       def interface(name)
-        if root_manager?
-          return self if name == :Root
-          interfaces[name] ||= begin
-            m = Manager.new(options, native_manager, root_manager)
-            m.extend Interface.const_get(name)
-            m
-          end
-        else
-          root_manager.interface(name)
+        return root_manager.interface(name) unless root_manager?
+        return self if name == :Root
+        interfaces[name] ||= begin
+          m = Manager.new(options, native_manager, root_manager)
+          m.extend Interface.const_get(name)
         end
       end
 
