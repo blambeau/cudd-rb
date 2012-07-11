@@ -16,5 +16,13 @@ module Cudd
     end
     alias :tautology? :one?
 
+    def ref
+      manager.ref(self)
+    end
+
+    def deref(recursive = true)
+      manager.deref(self, recursive)
+    end
+
   end # module BDD
 end # module Cudd

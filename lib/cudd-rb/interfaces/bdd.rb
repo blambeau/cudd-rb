@@ -52,12 +52,38 @@ module Cudd
         _bdd(Wrapper.bddOr(native_manager, f, g))
       end
 
+      # Increases the reference count of `f` and returns it.
+      #
+      # @see Cudd_Ref
+      def ref(f)
+        Wrapper.Ref(f)
+        f
+      end
+
+      # Decreases the reference count of `f` and returns it.
+      #
+      # Uses `Cudd_RecursiveDeref` if `recursive` is true (defauts), decreasing
+      # reference counts of all children of `f`. Uses `Cudd_Deref` otherwise
+      # (use only if your are sure).
+      #
+      # @see Cudd_Deref, Cudd_RecursiveDeref
+      def deref(f, recursive = true)
+        if recursive
+          Wrapper.RecursiveDeref(native_manager, f)
+        else
+          Wrapper.Deref(f)
+        end
+        f
+      end
+
     private
 
       def _bdd(pointer)
         m = self
-        pointer.instance_eval{ @manager = m }
-        pointer.extend(Cudd::BDD)
+        pointer.tap do |p|
+          p.instance_eval{ @manager = m }
+          p.extend(Cudd::BDD).ref
+        end
       end
 
     end # module BDD

@@ -6,6 +6,10 @@ module Cudd
     attach_function :Init, :Cudd_Init, [:uint, :uint, :uint, :uint, :ulong], :pointer
     attach_function :Quit, :Cudd_Quit, [:pointer], :void
 
+    attach_function :Ref,   :Cudd_Ref, [:pointer], :void
+    attach_function :Deref, :Cudd_Deref, [:pointer], :void
+    attach_function :RecursiveDeref, :Cudd_RecursiveDeref, [:pointer, :pointer], :void
+
     attach_function :ReadZero, :Cudd_ReadZero, [ :pointer ], :pointer
     attach_function :ReadOne,  :Cudd_ReadOne,  [ :pointer ], :pointer
 
