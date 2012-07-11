@@ -26,5 +26,17 @@ module Cudd
       manager.deref(self, recursive)
     end
 
+    def &(other)
+      manager.and(self, other)
+    end
+
+    def |(other)
+      manager.or(self, other)
+    end
+
+    def !
+      manager.not(self)
+    end
+
   end # module BDD
 end # module Cudd

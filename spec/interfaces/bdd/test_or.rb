@@ -9,8 +9,15 @@ module Cudd
       interface.close if interface
     end
 
-    subject{ interface.or(interface.new_var, interface.new_var) }
+    let(:x){ interface.new_var }
+    let(:y){ interface.new_var }
+
+    subject{ interface.or(x,y) }
 
     it_behaves_like "a BDD"
+
+    it 'is equal to (x | y)' do
+      subject.should eq(x | y)
+    end
   end
 end

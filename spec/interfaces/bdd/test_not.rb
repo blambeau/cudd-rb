@@ -17,5 +17,9 @@ module Cudd
     it 'yields its origin if negated' do
       interface.not(subject).should eq(x)
     end
+
+    it 'is equal to !x' do
+      subject.should eq(!x)
+    end
   end
 end
