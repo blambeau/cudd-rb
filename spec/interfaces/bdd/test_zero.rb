@@ -15,15 +15,17 @@ module Cudd
 
     it 'is zero' do
       subject.should be_zero
+      subject.false?.should eq(true)
     end
 
     it 'is not one' do
       subject.should_not be_one
+      subject.true?.should eq(false)
+      subject.should_not be_tautology
     end
 
-    it 'is not satisfiable and not a tautology' do
+    it 'is not satisfiable' do
       subject.should_not be_satisfiable
-      subject.should_not be_tautology
     end
   end
 end
