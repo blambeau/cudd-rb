@@ -76,6 +76,18 @@ module Cudd
         f
       end
 
+      # Returns the value of a BDD for a given variable assignment `input`.
+      #
+      # @see Cudd_Eval
+      def eval(f, input)
+        size, res = input.size, nil
+        FFI::MemoryPointer.new(:int, size) do |ptr|
+          ptr.write_array_of_int(input.map(&:to_i))
+          res = Wrapper.Eval(native_manager, f, ptr)
+        end
+        _bdd res
+      end
+
     private
 
       def _bdd(pointer)

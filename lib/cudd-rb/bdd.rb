@@ -39,5 +39,9 @@ module Cudd
       manager.not(self)
     end
 
+    def eval(input)
+      manager.eval(self, input)
+    end
+
   end # module BDD
 end # module Cudd

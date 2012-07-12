@@ -20,6 +20,8 @@ module Cudd
     attach_function :bddAnd,    :Cudd_bddAnd,    [ :pointer, :pointer, :pointer ], :pointer
     attach_function :bddOr,     :Cudd_bddOr,     [ :pointer, :pointer, :pointer ], :pointer
 
+    attach_function :Eval, :Cudd_Eval, [:pointer, :pointer, :pointer], :pointer
+
     attach_function :ShortestPath, :Cudd_ShortestPath,
                     [:pointer, :pointer, :pointer, :pointer, :pointer], :pointer
 
