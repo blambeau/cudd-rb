@@ -5,7 +5,6 @@ module Cudd
     let(:interface){ Cudd.manager.interface(:BDD) }
 
     after do
-      subject.deref
       interface.close if interface
     end
 

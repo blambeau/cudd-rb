@@ -21,35 +21,35 @@ module Cudd
       # @param [Integer] i a variable index
       # @see Cudd_bddIthVar
       def ith_var(i)
-        _bdd(Wrapper.bddIthVar(native_manager, i))
+        _bdd Wrapper.bddIthVar(native_manager, i)
       end
 
       # Returns a new BDD variable.
       #
       # @see Cudd_bddNewVar
       def new_var
-        _bdd(Wrapper.bddNewVar(native_manager))
+        _bdd Wrapper.bddNewVar(native_manager)
       end
 
       # Returns the negation of a BDD.
       #
       # @see Cudd_bddNot
       def not(f)
-        _bdd(Wrapper.bddNot(native_manager, f))
+        _bdd Wrapper.bddNot(native_manager, f)
       end
 
       # Returns the conjunction of two BDDs.
       #
       # @see Cudd_bddAnd
       def and(f, g)
-        _bdd(Wrapper.bddAnd(native_manager, f, g))
+        _bdd Wrapper.bddAnd(native_manager, f, g)
       end
 
       # Returns the disjunction of two BDDs.
       #
       # @see Cudd_bddOr
       def or(f, g)
-        _bdd(Wrapper.bddOr(native_manager, f, g))
+        _bdd Wrapper.bddOr(native_manager, f, g)
       end
 
       # Increases the reference count of `f` and returns it.
