@@ -15,6 +15,7 @@ module Cudd
 
     it 'is zero' do
       subject.should be_zero
+      subject.should be_contradiction
       subject.false?.should eq(true)
     end
 

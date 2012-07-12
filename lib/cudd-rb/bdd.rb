@@ -6,7 +6,8 @@ module Cudd
     def zero?
       self == manager.zero
     end
-    alias false? :zero?
+    alias :false? :zero?
+    alias :contradiction? :zero?
 
     def satisfiable?
       !zero?
@@ -15,8 +16,8 @@ module Cudd
     def one?
       self == manager.one
     end
-    alias :tautology? :one?
     alias :true? :one?
+    alias :tautology? :one?
 
     def ref
       manager.ref(self)
