@@ -10,8 +10,9 @@ module Cudd
     attach_function :Deref, :Cudd_Deref, [:pointer], :void
     attach_function :RecursiveDeref, :Cudd_RecursiveDeref, [:pointer, :pointer], :void
 
-    attach_function :ReadZero, :Cudd_ReadZero, [ :pointer ], :pointer
     attach_function :ReadOne,  :Cudd_ReadOne,  [ :pointer ], :pointer
+    attach_function :ReadZero, :Cudd_ReadZero, [ :pointer ], :pointer
+    attach_function :ReadLogicZero, :Cudd_ReadLogicZero, [ :pointer ], :pointer
 
     attach_function :bddIthVar, :Cudd_bddIthVar, [ :pointer, :int ], :pointer
     attach_function :bddNewVar, :Cudd_bddNewVar, [ :pointer ], :pointer

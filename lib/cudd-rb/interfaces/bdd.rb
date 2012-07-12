@@ -2,18 +2,18 @@ module Cudd
   module Interface
     module BDD
 
-      # Returns the bdd ZERO
-      #
-      # @see Cudd_ReadZero
-      def zero
-        @zero ||= _bdd(Wrapper.ReadZero(native_manager))
-      end
-
       # Returns the bdd ONE
       #
       # @see Cudd_ReadOne
       def one
-        @one ||= _bdd(Wrapper.ReadOne(native_manager))
+        _bdd Wrapper.ReadOne(native_manager)
+      end
+
+      # Returns the bdd ZERO
+      #
+      # @see Cudd_ReadLogicZero
+      def zero
+        _bdd Wrapper.ReadLogicZero(native_manager)
       end
 
       # Returns the BDD variable with index i.
