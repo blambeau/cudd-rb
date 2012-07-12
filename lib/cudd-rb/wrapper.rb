@@ -19,8 +19,8 @@ module Cudd
     attach_function :bddAnd,    :Cudd_bddAnd,    [ :pointer, :pointer, :pointer ], :pointer
     attach_function :bddOr,     :Cudd_bddOr,     [ :pointer, :pointer, :pointer ], :pointer
 
-    attach_function :ref,   :Cudd_Ref,   [ :pointer ], :void
-    attach_function :deref, :Cudd_Deref, [ :pointer ], :void
+    attach_function :ShortestPath, :Cudd_ShortestPath,
+                    [:pointer, :pointer, :pointer, :pointer, :pointer], :pointer
 
   end # module Wrapper
 end # module Cudd
