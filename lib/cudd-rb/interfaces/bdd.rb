@@ -95,12 +95,10 @@ module Cudd
       #
       # @see Cudd_Eval
       def eval(f, input)
-        size, res = input.size, nil
-        FFI::MemoryPointer.new(:int, size) do |ptr|
-          ptr.write_array_of_int(input.map(&:to_i))
-          res = Wrapper.Eval(native_manager, f, ptr)
+        assignment = Assignment.new(self, input)
+        assignment.with_memory_pointer do |ptr|
+          _bdd Wrapper.Eval(native_manager, f, ptr)
         end
-        _bdd res
       end
 
     private

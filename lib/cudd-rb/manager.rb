@@ -11,7 +11,7 @@ module Cudd
     # @api private
     def initialize(*args)
       args.each do |arg|
-        @options       = arg if arg.is_a?(Hash)
+        @options        = arg if arg.is_a?(Hash)
         @root_manager   = arg if arg.is_a?(Manager)
         @native_manager = arg if arg.is_a?(FFI::Pointer)
       end

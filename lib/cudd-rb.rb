@@ -40,6 +40,7 @@ end # module Cudd
 require_relative "cudd-rb/version"
 require_relative "cudd-rb/loader"
 require_relative "cudd-rb/errors"
+require_relative "cudd-rb/assignment"
 require_relative "cudd-rb/wrapper"
 require_relative "cudd-rb/manager"
 require_relative "cudd-rb/bdd"
