@@ -12,6 +12,10 @@ module Cudd
 
     it_behaves_like "a BDD"
 
+    it 'has the correct index' do
+      subject.var_index.should eq(0)
+    end
+
     it 'is not one' do
       subject.should_not be_one
     end

@@ -3,6 +3,10 @@ module Cudd
 
     attr_reader :manager
 
+    def var_index
+      manager.var_index(self)
+    end
+
     def zero?
       self == manager.zero
     end

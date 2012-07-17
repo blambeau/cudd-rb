@@ -10,6 +10,13 @@ module Cudd
       end
       alias :bdd_count :size
 
+      # Returns the variable index of a given node.
+      #
+      # @see Cudd_NodeReadIndex
+      def var_index(bdd)
+        Wrapper.NodeReadIndex(bdd)
+      end
+
       # Returns the bdd ONE
       #
       # @see Cudd_ReadOne
