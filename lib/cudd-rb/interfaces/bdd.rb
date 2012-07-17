@@ -2,6 +2,14 @@ module Cudd
   module Interface
     module BDD
 
+      # Returns the number of BDD variables in use
+      #
+      # @see Cudd_ReadSize
+      def size
+        Wrapper.ReadSize(native_manager)
+      end
+      alias :bdd_count :size
+
       # Returns the bdd ONE
       #
       # @see Cudd_ReadOne
