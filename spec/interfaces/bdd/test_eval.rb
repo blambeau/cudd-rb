@@ -2,68 +2,59 @@ require 'spec_helper'
 module Cudd
   describe Interface::BDD, 'eval' do
 
-    let(:interface){ Cudd.manager.interface(:BDD) }
-
-    after do
-      interface.close if interface
-    end
-
-    let(:x){ interface.new_var }
-    let(:y){ interface.new_var }
-
-    subject{ interface.eval(formula, input) }
+    subject{ bdd_interface.eval(formula, input) }
 
     context 'on one' do
-      let(:formula){ interface.one }
+      let(:formula){ one }
       let(:input){ [] }
 
       it 'is always satisfied' do
-        subject.should eq(interface.one)
+        subject.should eq(one)
       end
     end
     
     context 'on zero' do
-      let(:formula){ interface.zero }
+      let(:formula){ zero }
       let(:input){ [] }
 
       it 'is never satisfied' do
-        subject.should eq(interface.zero)
+        subject.should eq(zero)
       end
     end
     
     context 'on (x & y) with satisfying input' do
-      let(:formula){ interface.and(x, y) }
+      let(:formula){ bdd_interface.and(x, y) }
       let(:input){ [ 1, 1 ] }
 
       it 'is satisfied' do
-        subject.should eq(interface.one)
+        subject.should eq(one)
       end
     end
 
     context 'on (x & y) with non satisfying input' do
-      let(:formula){ interface.and(x, y) }
+      let(:formula){ bdd_interface.and(x, y) }
       let(:input){ [ 1, 0 ] }
 
       it 'is not satisfied' do
-        subject.should eq(interface.zero)
+        subject.should eq(zero)
       end
     end
 
     context 'on a non-satisfying Hash input' do
-      let(:formula){ interface.and(x, y) }
+      let(:formula){ bdd_interface.and(x, y) }
       let(:input){ {x => 1, y => 0} }
 
       it 'is not satisfied' do
-        subject.should eq(interface.zero)
+        subject.should eq(zero)
       end
     end
 
     context 'on a satisfying Hash input' do
-      let(:formula){ interface.and(x, y) }
+      let(:formula){ bdd_interface.and(x, y) }
       let(:input){ {x => 1, y => 1} }
 
       it 'is satisfied' do
-        subject.should eq(interface.one)
+        subject.should eq(one)
       end
     end
 
@@ -71,14 +62,14 @@ module Cudd
       let(:input){ [ ] }
       
       it 'complements input with missing 2' do
-        interface.eval(x, input).should eq(interface.zero)
-        interface.eval(!x, input).should eq(interface.one)
+        bdd_interface.eval(x, input).should eq(zero)
+        bdd_interface.eval(!x, input).should eq(one)
       end
     end
 
     it 'is accessible as BDD#eval' do
-      (x & y).eval([1, 1]).should eq(interface.one)
-      (x & y).eval([1, 0]).should eq(interface.zero)
+      (x & y).eval([1, 1]).should eq(one)
+      (x & y).eval([1, 0]).should eq(zero)
     end
 
   end

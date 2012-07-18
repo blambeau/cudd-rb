@@ -2,11 +2,7 @@ require 'spec_helper'
 module Cudd
   describe Assignment, "to_a" do
 
-    let(:interface){ Cudd.manager(:numVars => 2).interface(:BDD) }
-    let(:x){ interface.ith_var(0) }
-    let(:y){ interface.ith_var(1) }
-
-    subject{ Assignment.new(interface, input).to_a }
+    subject{ x; y; Assignment.new(bdd_interface, input).to_a }
 
     context 'when built with an array of integers' do
       let(:input){ [1, 0] }

@@ -2,18 +2,12 @@ require 'spec_helper'
 module Cudd
   describe Interface::BDD, 'ith_var' do
 
-    let(:interface){ Cudd.manager.interface(:BDD) }
-
-    after do
-      interface.close if interface
-    end
-
-    subject{ interface.ith_var(0) }
+    subject{ bdd_interface.ith_var(1) }
 
     it_behaves_like "a BDD"
 
     it 'has the correct index' do
-      subject.var_index.should eq(0)
+      subject.var_index.should eq(1)
     end
 
     it 'is not one' do
@@ -25,11 +19,11 @@ module Cudd
     end
 
     it 'is equal to itself' do
-      subject.should eq(interface.ith_var(0))
+      subject.should eq(bdd_interface.ith_var(1))
     end
 
     it 'is not equal to another one' do
-      subject.should_not eq(interface.ith_var(1))
+      subject.should_not eq(bdd_interface.ith_var(0))
     end
 
     it 'is satisfiable and not a tautology' do

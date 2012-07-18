@@ -2,24 +2,17 @@ require 'spec_helper'
 module Cudd
   describe Interface::BDD, 'satisfied?' do
 
-    let(:interface){ Cudd.manager.interface(:BDD) }
-
-    after do
-      interface.close if interface
-    end
-
-    let(:x){ interface.new_var }
-    let(:y){ interface.new_var }
     let(:assignment){ { x => true, y => false } }
-    subject{ x; y; bdd.satisfied?(assignment) }
+
+    subject{ bdd.satisfied?(assignment) }
 
     context 'on ZERO' do
-      let(:bdd){ interface.zero }
+      let(:bdd){ zero }
       it{ should be_false }
     end
 
     context 'on ONE' do
-      let(:bdd){ interface.one }
+      let(:bdd){ one }
       it{ should be_true }
     end
 
@@ -34,12 +27,12 @@ module Cudd
     end
 
     context 'on a non satisfied formula' do
-      let(:bdd){ interface.and(x, y) }
+      let(:bdd){ x & y }
       it{ should be_false }
     end
 
     context 'on a satisfied formula' do
-      let(:bdd){ interface.or(x, y) }
+      let(:bdd){ x | y }
       it{ should be_true }
     end
 

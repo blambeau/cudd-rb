@@ -2,13 +2,7 @@ require 'spec_helper'
 module Cudd
   describe Interface::BDD, 'zero' do
 
-    let(:interface){ Cudd.manager.interface(:BDD) }
-
-    after do
-      interface.close if interface
-    end
-
-    subject{ interface.zero }
+    subject{ zero }
 
     it_behaves_like "a BDD"
 
@@ -27,5 +21,6 @@ module Cudd
     it 'is not satisfiable' do
       subject.should_not be_satisfiable
     end
+
   end
 end
