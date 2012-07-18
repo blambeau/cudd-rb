@@ -216,6 +216,11 @@ module Cudd
         Wrapper.GenFree(gen) if gen
       end
 
+      # Returns an array with each assignement satisfying `bdd`.
+      def all_sat(bdd)
+        each_sat(bdd).to_a
+      end
+
       # Returns the largest cube of `bdd` as a BDD
       #
       # @see Cudd_LargestCube

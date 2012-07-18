@@ -35,7 +35,8 @@ module Cudd
     define_delegate_methods(:and, :or, :not, :nand, :nor, :xor, :xnor)
     define_delegate_methods(:& => :and, :| => :or, :! => :not)
     define_delegate_methods(:* => :and, :+ => :or, :~ => :not)
-    define_delegate_methods(:eval, :satisfiable?, :satisfied?, :each_sat, :one_sat)
+    define_delegate_methods(:eval, :satisfiable?, :satisfied?)
+    define_delegate_methods(:each_sat, :one_sat, :all_sat)
     define_delegate_methods(:largest_cube)
 
     def hash

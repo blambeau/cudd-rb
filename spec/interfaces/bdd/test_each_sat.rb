@@ -3,7 +3,7 @@ module Cudd
   module Interfaces
     describe BDD, "each_sat" do
 
-      subject{ formula.each_sat.to_a }
+      subject{ formula.all_sat } # formula.each_sat.to_a
 
       before do
         formula.ref
