@@ -67,6 +67,15 @@ module Cudd
       end
     end
 
+    context 'on a satisfying Assignment' do
+      let(:formula){ bdd_interface.and(x, y) }
+      let(:input){ Assignment.new(bdd_interface, [1, 1]) }
+
+      it 'is satisfied' do
+        subject.should eq(one)
+      end
+    end
+
     it 'is accessible as BDD#eval' do
       (x & y).eval([1, 1]).should eq(one)
       (x & y).eval([1, 0]).should eq(zero)

@@ -10,6 +10,11 @@ module Cudd
       @input = input
     end
 
+    def self.new(interface, input)
+      return input if input.is_a?(Assignment)
+      super
+    end
+
     def to_a
       result = Array.new(@interface.size, 2)
       case @input
