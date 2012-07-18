@@ -50,5 +50,8 @@ module Cudd
 
     cudd_function :LargestCube,    THREE_POINTERS
 
+    cudd_function :SolveEqn,       FIVE_POINTERS + [ :int ]
+    cudd_function :VerifySol,      FOUR_POINTERS + [ :int ]
+
   end # module Wrapper
 end # module Cudd
