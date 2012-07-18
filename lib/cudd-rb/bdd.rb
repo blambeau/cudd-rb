@@ -1,11 +1,23 @@
 module Cudd
   module BDD
 
+    def self.define_delegate_method(from, to = from)
+      define_method from do |*args, &bl|
+        manager.send(to, *([self] + args), &bl)
+      end
+    end
+
+    def self.define_delegate_methods(*methods)
+      methods = methods.first if methods.size==1 && methods.first.is_a?(Hash)
+      methods.each do |m|
+        define_delegate_method *Array(m)
+      end
+    end
+
     attr_reader :manager
 
-    def var_index
-      manager.var_index(self)
-    end
+    define_delegate_methods(:var_index)
+    alias :index :var_index
 
     def zero?
       self == manager.zero
@@ -13,39 +25,15 @@ module Cudd
     alias :false? :zero?
     alias :contradiction? :zero?
 
-    def satisfiable?
-      !zero?
-    end
-
     def one?
       self == manager.one
     end
     alias :true? :one?
     alias :tautology? :one?
 
-    def ref
-      manager.ref(self)
-    end
-
-    def deref(recursive = true)
-      manager.deref(self, recursive)
-    end
-
-    def &(other)
-      manager.and(self, other)
-    end
-
-    def |(other)
-      manager.or(self, other)
-    end
-
-    def !
-      manager.not(self)
-    end
-
-    def eval(input)
-      manager.eval(self, input)
-    end
+    define_delegate_methods(:ref, :deref)
+    define_delegate_methods(:& => :and, :| => :or, :! => :not)
+    define_delegate_methods(:eval, :satisfiable?)
 
   end # module BDD
 end # module Cudd

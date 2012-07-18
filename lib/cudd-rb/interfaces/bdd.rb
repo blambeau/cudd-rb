@@ -113,7 +113,7 @@ module Cudd
 
       # Returns true if `bdd` is satisfiable, false otherwise.
       def satisfiable?(bdd)
-        !bdd.zero?
+        !(zero == bdd)
       end
 
     private
