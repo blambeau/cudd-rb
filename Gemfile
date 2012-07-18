@@ -1,7 +1,7 @@
 source 'http://rubygems.org'
 
 group :runtime do
-  gem "ffi", "~> 1.0"
+  gem "ffi", "~> 1.1"
 end
 
 group :development do
