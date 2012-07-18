@@ -29,6 +29,7 @@ module Cudd
 
     cudd_function :bddIthVar,      [ :pointer, :int ]
     cudd_function :bddNewVar,      ONE_POINTER
+    cudd_function :bddIte,         FOUR_POINTERS
     cudd_function :bddNot,         TWO_POINTERS
     cudd_function :bddAnd,         THREE_POINTERS
     cudd_function :bddOr,          THREE_POINTERS

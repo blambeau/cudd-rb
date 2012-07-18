@@ -110,6 +110,13 @@ module Cudd
 
       ### BOOLEAN ALGEBRA ################################################################
 
+      # Returns the if-then-else of three BDDs.
+      #
+      # @see Cudd_bddIte
+      def ite(f, g, h)
+        bdd Wrapper.bddIte(native_manager, f, g, h)
+      end
+
       # Returns the negation of a BDD.
       #
       # @see Cudd_bddNot
