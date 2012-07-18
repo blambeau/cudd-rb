@@ -33,6 +33,10 @@ module Helpers
     bdd_interface.ith_var(2)
   end
 
+  def assignment(values)
+    bdd_interface.assignment(values)
+  end
+
 end
 
 RSpec.configure do |c|

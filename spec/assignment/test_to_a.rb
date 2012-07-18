@@ -2,7 +2,11 @@ require 'spec_helper'
 module Cudd
   describe Assignment, "to_a" do
 
-    subject{ x; y; Assignment.new(bdd_interface, input).to_a }
+    before do
+      x; y
+    end
+
+    subject{ bdd_interface.assignment(input).to_a }
 
     context 'when built with an array of integers' do
       let(:input){ [1, 0] }

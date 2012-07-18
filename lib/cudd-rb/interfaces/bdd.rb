@@ -122,11 +122,21 @@ module Cudd
 
       ### EVALUATION & SATISFIABILITY ####################################################
 
+      # Builds an Assignment instance from an Array of truth values of a Hash.
+      #
+      # Example:
+      #   interface.assignment(x => true, y => false)
+      #   interface.assignment([1, 0])
+      #
+      def assignment(input)
+        Assignment.new(self, input)
+      end
+
       # Returns the value of a BDD for a given variable assignment `input`.
       #
       # @see Cudd_Eval
       def eval(f, assignment)
-        assignment, res = Assignment.new(self, assignment), nil
+        assignment, res = assignment(assignment), nil
         with_ffi_pointer(:int, size) do |ptr|
           ptr.write_array_of_int(assignment.to_a)
           res = _bdd Wrapper.Eval(native_manager, f, ptr)

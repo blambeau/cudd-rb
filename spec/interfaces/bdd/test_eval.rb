@@ -69,7 +69,7 @@ module Cudd
 
     context 'on a satisfying Assignment' do
       let(:formula){ bdd_interface.and(x, y) }
-      let(:input){ Assignment.new(bdd_interface, [1, 1]) }
+      let(:input){ bdd_interface.assignment([1, 1]) }
 
       it 'is satisfied' do
         subject.should eq(one)

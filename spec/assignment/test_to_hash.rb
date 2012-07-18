@@ -2,7 +2,11 @@ require 'spec_helper'
 module Cudd
   describe Assignment, "to_hash" do
 
-    subject{ x; Assignment.new(bdd_interface, input).to_hash }
+    before do
+      x
+    end
+
+    subject{ bdd_interface.assignment(input).to_hash }
 
     context 'on a single variable assignment' do
       let(:input){ [ 1 ] }
