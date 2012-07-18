@@ -35,5 +35,19 @@ module Cudd
     define_delegate_methods(:& => :and, :| => :or, :! => :not)
     define_delegate_methods(:eval, :satisfiable?, :satisfied?)
 
+    def hash
+      address.hash
+    end
+
+    def ==(other)
+      address==other.address
+    end
+    alias :eql? :==
+
+    def to_s
+      "BDD(#{address})"
+    end
+    alias :inspect :to_s
+
   end # module BDD
 end # module Cudd
