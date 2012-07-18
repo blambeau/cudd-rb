@@ -154,6 +154,11 @@ module Cudd
         one == eval(bdd, assignment)
       end
 
+      # Returns one satisfying assignment for `bdd`.
+      def one_sat(bdd)
+        each_sat(largest_cube(bdd)).to_a.first
+      end
+
       # Yields each assignment that satisfies `bdd` in turn.
       def each_sat(bdd)
         return self.enum_for(:each_sat, bdd) unless block_given?
