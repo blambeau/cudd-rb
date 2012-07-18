@@ -2,6 +2,17 @@ module Cudd
   module Interface
     module BDD
 
+      ### BDD CREATION ###################################################################
+
+      def bdd(pointer)
+        return pointer if Cudd::BDD===pointer
+        m = self
+        pointer.tap do |p|
+          p.instance_eval{ @manager = m }
+          p.extend(Cudd::BDD).ref
+        end
+      end
+
       ### REFERENCE COUNT ################################################################
 
       # Increases the reference count of `f` and returns it.
@@ -50,7 +61,7 @@ module Cudd
       # @param [Integer] i a variable index
       # @see Cudd_bddIthVar
       def ith_var(i)
-        _bdd Wrapper.bddIthVar(native_manager, i)
+        bdd Wrapper.bddIthVar(native_manager, i)
       end
 
       # Returns the ith-vars denoted by `arg` as an Array of BDDs.
@@ -69,7 +80,7 @@ module Cudd
       #
       # @see Cudd_bddNewVar
       def new_var
-        _bdd Wrapper.bddNewVar(native_manager)
+        bdd Wrapper.bddNewVar(native_manager)
       end
 
       # Creates `count` new variables and returns them as an Array.
@@ -87,14 +98,14 @@ module Cudd
       #
       # @see Cudd_ReadOne
       def one
-        _bdd Wrapper.ReadOne(native_manager)
+        bdd Wrapper.ReadOne(native_manager)
       end
 
       # Returns the bdd ZERO
       #
       # @see Cudd_ReadLogicZero
       def zero
-        _bdd Wrapper.ReadLogicZero(native_manager)
+        bdd Wrapper.ReadLogicZero(native_manager)
       end
 
       ### BOOLEAN ALGEBRA ################################################################
@@ -103,49 +114,49 @@ module Cudd
       #
       # @see Cudd_bddNot
       def not(f)
-        _bdd Wrapper.bddNot(native_manager, f)
+        bdd Wrapper.bddNot(native_manager, f)
       end
 
       # Returns the conjunction of two BDDs.
       #
       # @see Cudd_bddAnd
       def and(f, g)
-        _bdd Wrapper.bddAnd(native_manager, f, g)
+        bdd Wrapper.bddAnd(native_manager, f, g)
       end
 
       # Returns the disjunction of two BDDs.
       #
       # @see Cudd_bddOr
       def or(f, g)
-        _bdd Wrapper.bddOr(native_manager, f, g)
+        bdd Wrapper.bddOr(native_manager, f, g)
       end
 
       # Returns the exclusive NAND of two BDDs.
       #
       # @see Cudd_bddNand
       def nand(f, g)
-        _bdd Wrapper.bddNand(native_manager, f, g)
+        bdd Wrapper.bddNand(native_manager, f, g)
       end
 
       # Returns the NOR of two BDDs.
       #
       # @see Cudd_bddNor
       def nor(f, g)
-        _bdd Wrapper.bddNor(native_manager, f, g)
+        bdd Wrapper.bddNor(native_manager, f, g)
       end
 
       # Returns the exclusive OR of two BDDs.
       #
       # @see Cudd_bddXor
       def xor(f, g)
-        _bdd Wrapper.bddXor(native_manager, f, g)
+        bdd Wrapper.bddXor(native_manager, f, g)
       end
 
       # Returns the exclusive NOR of two BDDs.
       #
       # @see Cudd_bddXnor
       def xnor(f, g)
-        _bdd Wrapper.bddXnor(native_manager, f, g)
+        bdd Wrapper.bddXnor(native_manager, f, g)
       end
 
       ### EVALUATION & SATISFIABILITY ####################################################
@@ -167,7 +178,7 @@ module Cudd
         assignment, res = assignment(assignment), nil
         with_ffi_pointer(:int, size) do |ptr|
           ptr.write_array_of_int(assignment.to_a)
-          res = _bdd Wrapper.Eval(native_manager, f, ptr)
+          res = bdd Wrapper.Eval(native_manager, f, ptr)
         end
         res
       end
@@ -209,21 +220,7 @@ module Cudd
       #
       # @see Cudd_LargestCube
       def largest_cube(bdd)
-        _bdd Wrapper.LargestCube(native_manager, bdd, nil)
-      end
-
-    private
-
-      def with_ffi_pointer(type = :int, size = 1, &bl)
-        FFI::MemoryPointer.new(type, size, &bl)
-      end
-
-      def _bdd(pointer)
-        m = self
-        pointer.tap do |p|
-          p.instance_eval{ @manager = m }
-          p.extend(Cudd::BDD).ref
-        end
+        bdd Wrapper.LargestCube(native_manager, bdd, nil)
       end
 
     end # module BDD

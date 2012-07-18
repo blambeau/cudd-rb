@@ -16,6 +16,12 @@ module Cudd
         end
       end
 
+    # protected
+
+      def with_ffi_pointer(type = :int, size = 1, &bl)
+        FFI::MemoryPointer.new(type, size, &bl)
+      end
+
     private
 
       def interfaces
