@@ -38,5 +38,7 @@ module Cudd
     cudd_function :NextCube,       THREE_POINTERS, :int
     cudd_function :GenFree,        ONE_POINTER, :int
 
+    cudd_function :LargestCube,    THREE_POINTERS
+
   end # module Wrapper
 end # module Cudd

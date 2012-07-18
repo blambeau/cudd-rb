@@ -172,6 +172,13 @@ module Cudd
         Wrapper.GenFree(gen) if gen
       end
 
+      # Returns the largest cube of `bdd` as a BDD
+      #
+      # @see Cudd_LargestCube
+      def largest_cube(bdd)
+        _bdd Wrapper.LargestCube(native_manager, bdd, nil)
+      end
+
     private
 
       def with_ffi_pointer(type = :int, size = 1, &bl)
