@@ -120,6 +120,34 @@ module Cudd
         _bdd Wrapper.bddOr(native_manager, f, g)
       end
 
+      # Returns the exclusive NAND of two BDDs.
+      #
+      # @see Cudd_bddNand
+      def nand(f, g)
+        _bdd Wrapper.bddNand(native_manager, f, g)
+      end
+
+      # Returns the NOR of two BDDs.
+      #
+      # @see Cudd_bddNor
+      def nor(f, g)
+        _bdd Wrapper.bddNor(native_manager, f, g)
+      end
+
+      # Returns the exclusive OR of two BDDs.
+      #
+      # @see Cudd_bddXor
+      def xor(f, g)
+        _bdd Wrapper.bddXor(native_manager, f, g)
+      end
+
+      # Returns the exclusive NOR of two BDDs.
+      #
+      # @see Cudd_bddXnor
+      def xnor(f, g)
+        _bdd Wrapper.bddXnor(native_manager, f, g)
+      end
+
       ### EVALUATION & SATISFIABILITY ####################################################
 
       # Builds an Assignment instance from an Array of truth values of a Hash.

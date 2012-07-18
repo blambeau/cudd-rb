@@ -32,6 +32,10 @@ module Cudd
     cudd_function :bddNot,         TWO_POINTERS
     cudd_function :bddAnd,         THREE_POINTERS
     cudd_function :bddOr,          THREE_POINTERS
+    cudd_function :bddNand,        THREE_POINTERS
+    cudd_function :bddNor,         THREE_POINTERS
+    cudd_function :bddXor,         THREE_POINTERS
+    cudd_function :bddXnor,        THREE_POINTERS
 
     cudd_function :Eval,           THREE_POINTERS
     cudd_function :FirstCube,      FOUR_POINTERS
