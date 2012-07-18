@@ -53,11 +53,32 @@ module Cudd
         _bdd Wrapper.bddIthVar(native_manager, i)
       end
 
+      # Returns the ith-vars denoted by `arg` as an Array of BDDs.
+      #
+      # Example:
+      #   x, y, z = manager.ith_vars(0, 1, 2)
+      #   x, y, z = manager.ith_vars(0..2)
+      #   x, y, z = manager.ith_vars([0, 1, 2])
+      #
+      def ith_vars(*args)
+        args = args.first if args.size==1
+        Array(args).map(&:to_i).map{|i| ith_var(i)}
+      end
+
       # Returns a new BDD variable.
       #
       # @see Cudd_bddNewVar
       def new_var
         _bdd Wrapper.bddNewVar(native_manager)
+      end
+
+      # Creates `count` new variables and returns them as an Array.
+      #
+      # Example:
+      #   x, y, z = manager.new_vars(3)
+      #
+      def new_vars(count)
+        (0...count).map{ new_var }
       end
 
       ### CONSTANTS ######################################################################
