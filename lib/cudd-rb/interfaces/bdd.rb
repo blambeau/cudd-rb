@@ -116,6 +116,11 @@ module Cudd
         !(zero == bdd)
       end
 
+      # Returns true if `bdd` is satisfied by a given assignment, false otherwise.
+      def satisfied?(bdd, assignment)
+        one == eval(bdd, assignment)
+      end
+
     private
 
       def _bdd(pointer)

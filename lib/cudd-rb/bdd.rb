@@ -33,7 +33,7 @@ module Cudd
 
     define_delegate_methods(:ref, :deref)
     define_delegate_methods(:& => :and, :| => :or, :! => :not)
-    define_delegate_methods(:eval, :satisfiable?)
+    define_delegate_methods(:eval, :satisfiable?, :satisfied?)
 
   end # module BDD
 end # module Cudd
