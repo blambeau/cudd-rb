@@ -1,6 +1,8 @@
 module Cudd
   class Assignment
 
+    TRUTH_VALUES = { 0 => false, 1 => true, 2 => nil }
+
     IntegerLike = proc{|arg| arg.respond_to? :to_i}
 
     def initialize(interface, input)
@@ -23,6 +25,16 @@ module Cudd
         raise ArgumentError, "Invalid assignment input `#{@input.inspect}`"
       end
       result
+    end
+
+    def to_hash
+      h = {}
+      to_a.each_with_index do |var_value, var_index|
+        unless (truth = TRUTH_VALUES[var_value]).nil?
+          h[ @interface.ith_var(var_index) ] = truth
+        end
+      end
+      h
     end
 
     def with_memory_pointer
