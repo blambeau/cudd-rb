@@ -166,6 +166,16 @@ module Cudd
         bdd Wrapper.bddXnor(native_manager, f, g)
       end
 
+      ### SUPPORT ########################################################################
+
+      # Finds the variables on which a `bdd` depends. Returns it as a BDD cube (a
+      # product of the variables)
+      #
+      # @see Cudd_Support
+      def support(bdd)
+        Wrapper.Support(native_manager, bdd)
+      end
+
       ### EVALUATION & SATISFIABILITY ####################################################
 
       # Builds an Assignment instance from an Array of truth values of a Hash.
