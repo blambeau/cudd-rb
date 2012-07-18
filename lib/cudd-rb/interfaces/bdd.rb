@@ -218,12 +218,11 @@ module Cudd
       #
       # @see Cudd_Eval
       def eval(f, assignment)
-        assignment, res = assignment(assignment), nil
+        assignment = assignment(assignment)
         with_ffi_pointer(:int, size) do |ptr|
           ptr.write_array_of_int(assignment.to_a)
-          res = bdd Wrapper.Eval(native_manager, f, ptr)
+          bdd Wrapper.Eval(native_manager, f, ptr)
         end
-        res
       end
 
       # Returns true if `bdd` is satisfiable, false otherwise.
