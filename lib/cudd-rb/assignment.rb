@@ -1,57 +1,65 @@
 module Cudd
   class Assignment
 
-    TRUTH_VALUES = { 0 => false, 1 => true, 2 => nil }
+    attr_reader :interface
+    protected :interface
 
-    IntegerLike = proc{|arg| arg.respond_to? :to_i}
-
-    def initialize(interface, input)
+    def initialize(interface, values)
       @interface = interface
-      @input = input
-    end
-
-    def self.new(interface, input)
-      return input if input.is_a?(Assignment)
-      super
+      @values    = values2array012(values)
     end
 
     def to_a
-      result = Array.new(@interface.size, 2)
-      case @input
-      when Array
-        @input.each_with_index do |val,index|
-          result[index] = val2assignment012(val)
-        end
-      when Hash
-        @input.each_pair do |var,val|
-          result[var2index(var)] = val2assignment012(val)
-        end
-      else
-        raise ArgumentError, "Invalid assignment input `#{@input.inspect}`"
-      end
-      result
+      @values
     end
 
     def to_hash
-      h = {}
-      to_a.each_with_index do |var_value, var_index|
-        unless (truth = TRUTH_VALUES[var_value]).nil?
-          h[ @interface.ith_var(var_index) ] = truth
+      {}.tap do |h|
+        to_a.each_with_index do |value, index|
+          h[ @interface.ith_var(index) ] = (value==1) if value < 2
         end
       end
-      h
     end
 
-    def with_memory_pointer
-      input, res = self.to_a, nil
-      FFI::MemoryPointer.new(:int, input.size) do |ptr|
-        ptr.write_array_of_int(input)
-        res = yield(ptr)
-      end
-      res
+    def hash
+      to_a.hash + 37*interface.hash
+    end
+
+    def ==(other)
+      return nil unless other.is_a?(Assignment)
+      interface == other.interface && to_a==other.to_a
+    end
+
+    def <=>(other)
+      return nil unless interface == other.interface
+      to_s <=> other.to_s
+    end
+
+    def to_s
+      to_a.map{|x| x<2 ? x.to_s : '-' }.join
     end
 
   private
+
+    IntegerLike = proc{|arg| arg.respond_to? :to_i}
+
+    def values2array012(values)
+      return values.to_a if values.is_a?(Assignment)
+      result = Array.new(@interface.size, 2)
+      case values
+      when Array
+        values.each_with_index do |val,index|
+          result[index] = val2assignment012(val)
+        end
+      when Hash
+        values.each_pair do |var,val|
+          result[var2index(var)] = val2assignment012(val)
+        end
+      else
+        raise ArgumentError, "Invalid assignment values `#{values.inspect}`"
+      end
+      result
+    end
 
     def val2assignment012(val)
       case val

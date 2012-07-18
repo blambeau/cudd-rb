@@ -126,10 +126,12 @@ module Cudd
       #
       # @see Cudd_Eval
       def eval(f, assignment)
-        assignment = Assignment.new(self, assignment)
-        assignment.with_memory_pointer do |ptr|
-          _bdd Wrapper.Eval(native_manager, f, ptr)
+        assignment, res = Assignment.new(self, assignment), nil
+        with_ffi_pointer(:int, size) do |ptr|
+          ptr.write_array_of_int(assignment.to_a)
+          res = _bdd Wrapper.Eval(native_manager, f, ptr)
         end
+        res
       end
 
       # Returns true if `bdd` is satisfiable, false otherwise.
@@ -143,6 +145,10 @@ module Cudd
       end
 
     private
+
+      def with_ffi_pointer(type = :int, size = 1, &bl)
+        FFI::MemoryPointer.new(type, size, &bl)
+      end
 
       def _bdd(pointer)
         m = self
