@@ -34,6 +34,9 @@ module Cudd
     cudd_function :bddOr,          THREE_POINTERS
 
     cudd_function :Eval,           THREE_POINTERS
+    cudd_function :FirstCube,      FOUR_POINTERS
+    cudd_function :NextCube,       THREE_POINTERS, :int
+    cudd_function :GenFree,        ONE_POINTER, :int
 
   end # module Wrapper
 end # module Cudd

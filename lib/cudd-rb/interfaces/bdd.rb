@@ -154,6 +154,24 @@ module Cudd
         one == eval(bdd, assignment)
       end
 
+      # Yields each assignment that satisfies `bdd` in turn.
+      def each_sat(bdd)
+        return self.enum_for(:each_sat, bdd) unless block_given?
+        return unless satisfiable?(bdd)
+        size, gen = self.size, nil
+        with_ffi_pointer(:pointer) do |cube_pointer|
+          with_ffi_pointer(:double) do |value_pointer|
+            gen = Wrapper.FirstCube(native_manager, bdd, cube_pointer, value_pointer)
+            begin
+              ints = cube_pointer.read_pointer.read_array_of_int(size)
+              yield Assignment.new(self, ints)
+            end until Wrapper.NextCube(gen, cube_pointer, value_pointer)==0
+          end
+        end
+      ensure
+        Wrapper.GenFree(gen) if gen
+      end
+
     private
 
       def with_ffi_pointer(type = :int, size = 1, &bl)
