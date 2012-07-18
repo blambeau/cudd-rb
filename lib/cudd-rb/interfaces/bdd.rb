@@ -176,6 +176,32 @@ module Cudd
         Wrapper.Support(native_manager, bdd)
       end
 
+      ### COERCIONS to CubeArray #########################################################
+
+      # Converts a cube array to a bdd
+      #
+      # @see Cudd_CubeArrayToBdd
+      def cube2bdd(cube_array)
+        with_ffi_pointer(:int, cube_array.size) do |ptr|
+          ptr.write_array_of_int(cube_array)
+          pointer = Wrapper.CubeArrayToBdd(native_manager, ptr)
+          raise "Cudd_CubeArrayToBdd failed" unless pointer
+          bdd pointer
+        end
+      end
+
+      # Converts a bdd to a cube array
+      #
+      # @see Cudd_BddToCubeArray
+      def bdd2cube(bdd)
+        s = size
+        with_ffi_pointer(:int, s) do |ptr|
+          res = Wrapper.BddToCubeArray(native_manager, bdd, ptr)
+          raise "Cudd_BddToCubeArray failed" unless res==1
+          ptr.read_array_of_int(s)
+        end
+      end
+
       ### EVALUATION & SATISFIABILITY ####################################################
 
       # Builds an Assignment instance from an Array of truth values of a Hash.

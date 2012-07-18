@@ -40,6 +40,9 @@ module Cudd
 
     cudd_function :Support,        TWO_POINTERS
 
+    cudd_function :BddToCubeArray, THREE_POINTERS, :int
+    cudd_function :CubeArrayToBdd, TWO_POINTERS
+
     cudd_function :Eval,           THREE_POINTERS
     cudd_function :FirstCube,      FOUR_POINTERS
     cudd_function :NextCube,       THREE_POINTERS, :int
