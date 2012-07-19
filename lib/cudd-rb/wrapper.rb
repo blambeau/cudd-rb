@@ -38,6 +38,11 @@ module Cudd
     cudd_function :bddXor,         THREE_POINTERS
     cudd_function :bddXnor,        THREE_POINTERS
 
+    cudd_function :Cofactor,        THREE_POINTERS
+    cudd_function :bddRestrict,     THREE_POINTERS
+    cudd_function :bddMinimize,     THREE_POINTERS
+    cudd_function :bddLICompaction, THREE_POINTERS
+
     cudd_function :Support,        TWO_POINTERS
 
     cudd_function :BddToCubeArray, THREE_POINTERS, :int

@@ -211,6 +211,32 @@ module Cudd
         Wrapper.Support(native_manager, bdd)
       end
 
+      ### COFACTOR & GENERALIZED COFACTOR ################################################
+
+      # @see Cudd_Cofactor
+      def cofactor(bdd, cube)
+        cube = cube(cube, :bdd) unless cube.is_a?(Cudd::BDD)
+        bdd Wrapper.Cofactor(native_manager, bdd, cube)
+      end
+
+      # @see Cudd_bddRestrict
+      def restrict(f, g)
+        g = cube(g, :bdd) unless g.is_a?(Cudd::BDD)
+        bdd Wrapper.bddRestrict(native_manager, f, g)
+      end
+
+      # @see Cudd_bddMinimize
+      def minimize(f, g)
+        g = cube(g, :bdd) unless g.is_a?(Cudd::BDD)
+        bdd Wrapper.bddMinimize(native_manager, f, g)
+      end
+
+      # @see Cudd_bddLICompaction
+      def li_compaction(f, g)
+        g = cube(g, :bdd) unless g.is_a?(Cudd::BDD)
+        bdd Wrapper.bddLICompaction(native_manager, f, g)
+      end
+
       ### COERCIONS from & to Cubes ######################################################
 
       # Coerces `arg` to a cube.
