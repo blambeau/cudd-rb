@@ -40,7 +40,6 @@ module Cudd
 
     define_delegate_methods(:eval, :satisfiable?, :satisfied?)
     define_delegate_methods(:each_sat, :one_sat, :all_sat)
-    define_delegate_methods(:largest_cube)
 
     define_delegate_methods(:support)
 

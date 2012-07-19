@@ -273,13 +273,6 @@ module Cudd
         each_sat(bdd).to_a
       end
 
-      # Returns the largest cube of `bdd` as a BDD
-      #
-      # @see Cudd_LargestCube
-      def largest_cube(bdd)
-        bdd Wrapper.LargestCube(native_manager, bdd, nil)
-      end
-
     end # module BDD
   end # module Interface
 end # module Cudd
