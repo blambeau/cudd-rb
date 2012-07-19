@@ -1,8 +1,8 @@
 require 'spec_helper'
 module Cudd
-  describe Cube, 'to_bool_expr' do
+  describe Cube, 'to_dnf' do
 
-    subject{ c.to_bool_expr }
+    subject{ c.to_dnf }
 
     before{ x; y; z  }
 

@@ -58,7 +58,7 @@ module Cudd
       h
     end
 
-    def to_bool_expr
+    def to_dnf
       buf = ""
       to_a012.each_with_index do |val, index|
         next if val == 2
@@ -69,7 +69,7 @@ module Cudd
       end
       buf
     end
-    alias :to_s :to_bool_expr
+    alias :to_s :to_dnf
 
   private
 

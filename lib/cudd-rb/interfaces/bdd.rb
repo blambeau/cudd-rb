@@ -264,7 +264,7 @@ module Cudd
         each_cube(bdd) do |cube|
           size += 1
           buf << " | " unless buf.empty?
-          buf << "(" << cube.to_bool_expr << ")"
+          buf << "(" << cube.to_dnf << ")"
         end
         size == 1 ? buf[1...-1] : buf
       end
