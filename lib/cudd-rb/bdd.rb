@@ -41,6 +41,7 @@ module Cudd
     define_delegate_methods(:* => :and, :+ => :or, :~ => :not)
 
     define_delegate_methods(:cofactor, :restrict, :minimize, :li_compaction)
+    define_delegate_methods(:exist_abstract, :univ_abstract, :exist, :univ, :forall)
 
     define_delegate_methods(:eval, :satisfiable?, :satisfied?)
     define_delegate_methods(:each_cube, :one_cube, :all_cubes)

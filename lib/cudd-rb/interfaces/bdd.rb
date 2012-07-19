@@ -203,6 +203,23 @@ module Cudd
         bdd Wrapper.bddLICompaction(native_manager, f, g)
       end
 
+      ### ABSTRACTION ####################################################################
+
+      # @see Cudd_bddExistAbstract
+      def exist_abstract(bdd, cube)
+        cube = cube(cube, :bdd) unless cube.is_a?(Cudd::BDD)
+        bdd Wrapper.bddExistAbstract(native_manager, bdd, cube)
+      end
+      alias :exist :exist_abstract
+
+      # @see Cudd_bddUnivAbstract
+      def univ_abstract(bdd, cube)
+        cube = cube(cube, :bdd) unless cube.is_a?(Cudd::BDD)
+        bdd Wrapper.bddUnivAbstract(native_manager, bdd, cube)
+      end
+      alias :univ :univ_abstract
+      alias :forall :univ_abstract
+
       ### COERCIONS from & to Cubes ######################################################
 
       # Coerces `arg` to a cube.

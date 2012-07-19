@@ -43,6 +43,9 @@ module Cudd
     cudd_function :bddMinimize,     THREE_POINTERS
     cudd_function :bddLICompaction, THREE_POINTERS
 
+    cudd_function :bddExistAbstract, THREE_POINTERS
+    cudd_function :bddUnivAbstract,  THREE_POINTERS
+
     cudd_function :Support,        TWO_POINTERS
 
     cudd_function :BddToCubeArray, THREE_POINTERS, :int
