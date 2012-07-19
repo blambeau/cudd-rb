@@ -193,20 +193,6 @@ module Cudd
         end
       end
 
-      # @see Cudd_bddMinimize
-      def minimize(f, g)
-        with_bdd_cube(g) do |c|
-          bdd Wrapper.bddMinimize(native_manager, f, c)
-        end
-      end
-
-      # @see Cudd_bddLICompaction
-      def li_compaction(f, g)
-        with_bdd_cube(g) do |c|
-          bdd Wrapper.bddLICompaction(native_manager, f, c)
-        end
-      end
-
       ### ABSTRACTION ####################################################################
 
       # @see Cudd_bddExistAbstract
