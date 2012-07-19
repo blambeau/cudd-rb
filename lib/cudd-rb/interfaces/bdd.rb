@@ -4,8 +4,12 @@ module Cudd
 
       ### BDD CREATION ###################################################################
 
-      def bdd(pointer)
+      def bdd(pointer, &error_handler)
         return pointer if Cudd::BDD===pointer
+        if FFI::Pointer::NULL==pointer
+          raise Cudd::Error, "NULL pointer for BDD" unless error_handler
+          error_handler.call
+        end
         m = self
         pointer.tap do |p|
           p.instance_eval{ @manager = m }
@@ -31,11 +35,7 @@ module Cudd
       #
       # @see Cudd_Deref, Cudd_RecursiveDeref
       def deref(f, recursive = true)
-        if recursive
-          Wrapper.RecursiveDeref(native_manager, f)
-        else
-          Wrapper.Deref(f)
-        end
+        recursive ? Wrapper.RecursiveDeref(native_manager, f) : Wrapper.Deref(f)
         f
       end
 
@@ -128,14 +128,14 @@ module Cudd
       #
       # @see Cudd_ReadOne
       def one
-        bdd Wrapper.ReadOne(native_manager)
+        @one ||= bdd Wrapper.ReadOne(native_manager)
       end
 
       # Returns the bdd ZERO
       #
       # @see Cudd_ReadLogicZero
       def zero
-        bdd Wrapper.ReadLogicZero(native_manager)
+        @zero ||= bdd Wrapper.ReadLogicZero(native_manager)
       end
 
       ### BOOLEAN ALGEBRA ################################################################
@@ -236,9 +236,7 @@ module Cudd
       def cube2bdd(cube_array)
         with_ffi_pointer(:int, cube_array.size) do |ptr|
           ptr.write_array_of_int(cube_array)
-          if pointer = Wrapper.CubeArrayToBdd(native_manager, ptr)
-            bdd pointer
-          else
+          bdd Wrapper.CubeArrayToBdd(native_manager, ptr) do
             raise Cudd::Error, "Cudd_CubeArrayToBdd failed on `#{cube_array.inspect}`"
           end
         end
