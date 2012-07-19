@@ -33,6 +33,7 @@ module Cudd
     alias :tautology? :one?
 
     define_delegate_methods(:ref, :deref)
+    define_delegate_methods(:is_complement?)
 
     define_delegate_methods(:ite)
     define_delegate_methods(:and, :or, :not, :nand, :nor, :xor, :xnor)

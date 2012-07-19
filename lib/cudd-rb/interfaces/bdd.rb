@@ -138,6 +138,11 @@ module Cudd
         @zero ||= bdd Wrapper.ReadLogicZero(native_manager)
       end
 
+      # Returns true if `bdd` is in complemented form, false otherwise
+      def is_complement?(bdd)
+        (bdd.address & 1)==1
+      end
+
       ### BOOLEAN ALGEBRA ################################################################
 
       # Returns the if-then-else of three BDDs.
