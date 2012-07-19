@@ -45,7 +45,7 @@ module Cudd
 
     define_delegate_methods(:support)
 
-    define_delegate_methods(:to_cube => :bdd2cube)
+    define_delegate_methods(:to_cube => :bdd2cube, :to_dnf => :bdd2dnf)
 
     def hash
       address.hash

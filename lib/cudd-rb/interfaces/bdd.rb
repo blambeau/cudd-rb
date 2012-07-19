@@ -256,6 +256,19 @@ module Cudd
         end
       end
 
+      # Converts a bdd to a disjunctive normal form
+      def bdd2dnf(bdd)
+        return "true"  if bdd==one
+        return "false" if bdd==zero
+        buf, size = "", 0
+        each_cube(bdd) do |cube|
+          size += 1
+          buf << " | " unless buf.empty?
+          buf << "(" << cube.to_bool_expr << ")"
+        end
+        size == 1 ? buf[1...-1] : buf
+      end
+
       ### EVALUATION & SATISFIABILITY ####################################################
 
       # Returns the value of a BDD for a given variable assignment `input`.
