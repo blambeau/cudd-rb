@@ -14,7 +14,7 @@ module Cudd
         m = self
         pointer.tap do |p|
           p.instance_eval{ @manager = m }
-          p.extend(Cudd::BDD).ref
+          p.extend(Cudd::BDD)
         end
       end
 
