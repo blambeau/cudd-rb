@@ -2,30 +2,35 @@ require 'spec_helper'
 module Cudd
   describe Interface::BDD, 'new_var' do
 
-    subject{ bdd_interface.new_var }
+    context 'without argument' do
+      subject{ bdd_interface.new_var }
 
-    it_behaves_like "a BDD"
+      it_behaves_like "a BDD"
 
-    it 'has the correct index' do
-      next_index = bdd_interface.size
-      subject.var_index.should eq(next_index)
+      it 'has the last index' do
+        next_index = bdd_interface.size
+        subject.var_index.should eq(next_index)
+      end
+
+      it 'has a default name' do
+        subject.var_name.should eq(:"v#{subject.var_index}")
+      end
     end
 
-    it 'is not one' do
-      subject.should_not be_one
+    context 'with a name as argument' do
+      subject{ bdd_interface.new_var(:foo) }
+
+      it_behaves_like "a BDD"
+
+      it 'has the last index' do
+        next_index = bdd_interface.size
+        subject.var_index.should eq(next_index)
+      end
+
+      it 'has the provided name' do
+        subject.var_name.should eq(:foo)
+      end
     end
 
-    it 'is not zero' do
-      subject.should_not be_zero
-    end
-
-    it 'is not equal to another one' do
-      subject.should_not eq(bdd_interface.new_var)
-    end
-
-    it 'is satisfiable and not a tautology' do
-      subject.should be_satisfiable
-      subject.should_not be_tautology
-    end
   end
 end

@@ -41,6 +41,27 @@ module Cudd
 
       ### VARS ###########################################################################
 
+      # Returns the variable names
+      def var_names
+        @var_names ||= []
+        (@var_names.size...size).each do |i|
+          @var_names[i] = :"v#{i}"
+        end if @var_names.size < size
+        @var_names
+      end
+
+      # Sets the variable names
+      def var_names=(names)
+        @var_names = names
+      end
+
+      # Returns the variable name of a given bdd
+      def var_name(bdd)
+        return :zero if bdd==zero
+        return :one  if bdd==one
+        var_names[var_index(bdd)]
+      end
+
       # Returns the number of BDD variables in use
       #
       # @see Cudd_ReadSize
@@ -53,6 +74,7 @@ module Cudd
       #
       # @see Cudd_NodeReadIndex
       def var_index(bdd)
+        return nil if bdd==zero or bdd==one
         Wrapper.NodeReadIndex(bdd)
       end
 
@@ -79,8 +101,10 @@ module Cudd
       # Returns a new BDD variable.
       #
       # @see Cudd_bddNewVar
-      def new_var
-        bdd Wrapper.bddNewVar(native_manager)
+      def new_var(name = nil)
+        var = bdd Wrapper.bddNewVar(native_manager)
+        var_names[var_index(var)] = name if name
+        var
       end
 
       # Creates `count` new variables and returns them as an Array.
@@ -88,8 +112,14 @@ module Cudd
       # Example:
       #   x, y, z = manager.new_vars(3)
       #
-      def new_vars(count)
-        (0...count).map{ new_var }
+      def new_vars(first, *args)
+        _, first = args.unshift(first), args unless args.empty?
+        case first
+        when Integer    then (0...first).map{ new_var }
+        when Enumerable then first.map{|x| new_var(x) }
+        else
+          [ new_var(first) ]
+        end
       end
 
       ### CONSTANTS ######################################################################

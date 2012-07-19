@@ -16,8 +16,9 @@ module Cudd
 
     attr_reader :manager
 
-    define_delegate_methods(:var_index)
+    define_delegate_methods(:var_index, :var_name)
     alias :index :var_index
+    alias :name  :var_name
 
     def zero?
       self == manager.zero
