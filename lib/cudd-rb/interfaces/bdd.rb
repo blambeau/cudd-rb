@@ -248,7 +248,7 @@ module Cudd
 
       # Returns one satisfying assignment for `bdd`.
       def one_sat(bdd)
-        each_sat(largest_cube(bdd)).to_a.first
+        each_sat(bdd).first
       end
 
       # Yields each assignment that satisfies `bdd` in turn.

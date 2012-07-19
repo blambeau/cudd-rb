@@ -24,8 +24,8 @@ module Cudd
       context 'on (x | y)' do
         let(:formula){ x | y }
       
-        it 'returns a bdd satisfied by x => true' do
-          subject.should eq(cube(x => true))
+        it 'returns a bdd satisfied by x => false, y => true' do
+          subject.should eq(cube(x => false, y => true))
         end
       end
 
