@@ -206,9 +206,11 @@ module Cudd
       def cube2bdd(cube_array)
         with_ffi_pointer(:int, cube_array.size) do |ptr|
           ptr.write_array_of_int(cube_array)
-          pointer = Wrapper.CubeArrayToBdd(native_manager, ptr)
-          raise "Cudd_CubeArrayToBdd failed" unless pointer
-          bdd pointer
+          if pointer = Wrapper.CubeArrayToBdd(native_manager, ptr)
+            bdd pointer
+          else
+            raise Cudd::Error, "Cudd_CubeArrayToBdd failed on `#{cube_array.inspect}`"
+          end
         end
       end
 
@@ -218,9 +220,11 @@ module Cudd
       def bdd2cube(bdd)
         s = size
         with_ffi_pointer(:int, s) do |ptr|
-          res = Wrapper.BddToCubeArray(native_manager, bdd, ptr)
-          raise "Cudd_BddToCubeArray failed" unless res==1
-          ptr.read_array_of_int(s)
+          if Wrapper.BddToCubeArray(native_manager, bdd, ptr)==1
+            ptr.read_array_of_int(s)
+          else
+            raise NotACubeError
+          end
         end
       end
 

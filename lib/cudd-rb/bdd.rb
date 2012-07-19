@@ -43,6 +43,8 @@ module Cudd
 
     define_delegate_methods(:support)
 
+    define_delegate_methods(:to_cube => :bdd2cube)
+
     def hash
       address.hash
     end

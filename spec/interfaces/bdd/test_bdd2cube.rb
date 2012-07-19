@@ -17,6 +17,16 @@ module Cudd
         subject.should eq([1, 0, 2])
       end
 
+      it 'is available as BDD#to_cube' do
+        (x & !y).to_cube.should eq(subject)
+      end
+
+      it 'raises a NotACubeError on a BDD that is not a cube' do
+        lambda{
+          (x | y).to_cube
+        }.should raise_error(NotACubeError)
+      end
+
     end
   end
 end
