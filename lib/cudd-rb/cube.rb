@@ -58,6 +58,19 @@ module Cudd
       h
     end
 
+    def to_bool_expr
+      buf = ""
+      to_a012.each_with_index do |val, index|
+        next if val == 2
+        name = interface.ith_var(index).var_name
+        buf << " & " unless buf.empty?
+        buf << "!" if val==0
+        buf << name.to_s
+      end
+      buf
+    end
+    alias :to_s :to_bool_expr
+
   private
 
     def self.arg012_to_truth(arg012)
