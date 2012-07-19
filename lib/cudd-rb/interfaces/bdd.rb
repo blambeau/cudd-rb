@@ -181,41 +181,47 @@ module Cudd
 
       # @see Cudd_Cofactor
       def cofactor(bdd, cube)
-        cube = cube(cube, :bdd) unless cube.is_a?(Cudd::BDD)
-        bdd Wrapper.Cofactor(native_manager, bdd, cube)
+        with_bdd_cube(cube) do |c|
+          bdd Wrapper.Cofactor(native_manager, bdd, c)
+        end
       end
 
       # @see Cudd_bddRestrict
       def restrict(f, g)
-        g = cube(g, :bdd) unless g.is_a?(Cudd::BDD)
-        bdd Wrapper.bddRestrict(native_manager, f, g)
+        with_bdd_cube(g) do |c|
+          bdd Wrapper.bddRestrict(native_manager, f, c)
+        end
       end
 
       # @see Cudd_bddMinimize
       def minimize(f, g)
-        g = cube(g, :bdd) unless g.is_a?(Cudd::BDD)
-        bdd Wrapper.bddMinimize(native_manager, f, g)
+        with_bdd_cube(g) do |c|
+          bdd Wrapper.bddMinimize(native_manager, f, c)
+        end
       end
 
       # @see Cudd_bddLICompaction
       def li_compaction(f, g)
-        g = cube(g, :bdd) unless g.is_a?(Cudd::BDD)
-        bdd Wrapper.bddLICompaction(native_manager, f, g)
+        with_bdd_cube(g) do |c|
+          bdd Wrapper.bddLICompaction(native_manager, f, c)
+        end
       end
 
       ### ABSTRACTION ####################################################################
 
       # @see Cudd_bddExistAbstract
       def exist_abstract(bdd, cube)
-        cube = cube(cube, :bdd) unless cube.is_a?(Cudd::BDD)
-        bdd Wrapper.bddExistAbstract(native_manager, bdd, cube)
+        with_bdd_cube(cube) do |c|
+          bdd Wrapper.bddExistAbstract(native_manager, bdd, c)
+        end
       end
       alias :exist :exist_abstract
 
       # @see Cudd_bddUnivAbstract
       def univ_abstract(bdd, cube)
-        cube = cube(cube, :bdd) unless cube.is_a?(Cudd::BDD)
-        bdd Wrapper.bddUnivAbstract(native_manager, bdd, cube)
+        with_bdd_cube(cube) do |c|
+          bdd Wrapper.bddUnivAbstract(native_manager, bdd, c)
+        end
       end
       alias :univ :univ_abstract
       alias :forall :univ_abstract
@@ -319,6 +325,22 @@ module Cudd
       # Returns an array with all cubes satisfying `bdd`.
       def all_cubes(bdd)
         each_cube(bdd).to_a
+      end
+
+    private
+
+      # Yields the block with a cube encoded by a BDD. If the latter must be
+      # built, it is automatically referenced then dereferenced after the block
+      # has been yield.
+      def with_bdd_cube(cube)
+        if cube.is_a?(Cudd::BDD)
+          yield(cube)
+        else
+          cube = cube(cube, :bdd).ref
+          res = yield(cube)
+          cube.deref
+          res
+        end
       end
 
     end # module BDD
