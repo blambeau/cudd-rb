@@ -16,7 +16,7 @@ module Cudd
         end
       end
 
-    # protected
+    private
 
       def with_ffi_pointer(type = :int, size = 1)
         res = nil
@@ -25,8 +25,6 @@ module Cudd
         end
         res
       end
-
-    private
 
       def interfaces
         @interfaces ||= {}
