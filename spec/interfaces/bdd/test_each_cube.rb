@@ -1,9 +1,9 @@
 require 'spec_helper'
 module Cudd
   module Interfaces
-    describe BDD, "each_sat" do
+    describe BDD, "each_cube" do
 
-      subject{ formula.all_sat } # formula.each_sat.to_a
+      subject{ formula.all_cubes } # formula.each_cube.to_a
 
       before do
         x; y; z;
@@ -11,9 +11,9 @@ module Cudd
       end
 
       after do
-        subject.each do |sat|
-          sat.should be_a(Array)
-          formula.satisfied?(sat).should be_true
+        subject.each do |cube|
+          cube.should be_a(Cube)
+          formula.satisfied?(cube).should be_true
         end
         formula.deref if formula
       end
@@ -22,7 +22,7 @@ module Cudd
         let(:formula){ x & y }
 
         it 'returns an enumerator' do
-          formula.each_sat.should be_a(Enumerator)
+          formula.each_cube.should be_a(Enumerator)
         end
       end
 
@@ -38,7 +38,7 @@ module Cudd
         let(:formula){ one }
 
         it 'yields one empty assignment' do
-          subject.should eq([[2,2,2]])
+          subject.should eq([cube([2,2,2])])
         end
       end
 
@@ -46,7 +46,7 @@ module Cudd
         let(:formula){ x }
 
         it 'yields one assignment with x=true' do
-          subject.should eq([[1,2,2]])
+          subject.should eq([cube([1,2,2])])
         end
       end
 
@@ -54,7 +54,7 @@ module Cudd
         let(:formula){ !x }
 
         it 'yields one assignment with x=false' do
-          subject.should eq([[0,2,2]])
+          subject.should eq([cube([0,2,2])])
         end
       end
 
@@ -62,7 +62,7 @@ module Cudd
         let(:formula){ x & y }
 
         it 'returns one assignment with both x and y to true' do
-          subject.should eq([[1,1,2]])
+          subject.should eq([cube([1,1,2])])
         end
       end
 
@@ -70,7 +70,7 @@ module Cudd
         let(:formula){ x | y }
 
         it 'returns two assignments' do
-          subject.should eq([[0,1,2], [1,2,2]])
+          subject.should eq([cube([0,1,2]), cube([1,2,2])])
         end
       end
 

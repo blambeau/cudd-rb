@@ -213,18 +213,6 @@ module Cudd
 
       ### COERCIONS from & to Cubes ######################################################
 
-      def truth_value_as_012(truth)
-        case truth
-        when Cudd::BDD  then is_complement?(truth) ? 0 : 1
-        when Integer    then (truth >= 0 and truth <= 1) ? truth : 2
-        when TrueClass  then 1
-        when FalseClass then 0
-        when NilClass   then 2
-        else
-          raise ArgumentError, "Invalid truth value #{truth}"
-        end
-      end
-
       # Coerces `arg` to a cube.
       #
       # Example (suppose three BDD variables: x, y and z):
@@ -235,26 +223,11 @@ module Cudd
       #   cube([x, !y])                # same
       #   cube(x => true, y => false)  # same
       #
-      def cube(arg, as = :a012)
-        a012 = nil
-        if arg.is_a?(Cudd::BDD)
-          a012 = bdd2cube(arg)
-        else
-          a012 = Array.new(size, 2)
-          enum = arg.is_a?(Hash) ? arg.each_pair : arg.each_with_index
-          enum.each do |k,v|
-            k,v = v,k unless arg.is_a?(Hash)
-            index = [k, v].find{|x| x.is_a?(Cudd::BDD) }.index rescue k
-            a012[index] = truth_value_as_012(v)
-          end
-        end
-        case as
-        when :a012   then a012
-        when :bdd    then cube2bdd(a012)
-        when :hash   then cube2hash(a012)
-        else
-          raise ArgumentError, "Invalid 'as' option `#{as}`"
-        end
+      def cube(arg, as = :cube)
+        cube = Cube.new(self, arg)
+        cube.send(:"to_#{as}")
+      rescue NoMethodError
+        raise ArgumentError, "Invalid 'as' option `#{as}`"
       end
 
       # Converts a cube array to a bdd
@@ -267,15 +240,6 @@ module Cudd
             raise Cudd::Error, "Cudd_CubeArrayToBdd failed on `#{cube_array.inspect}`"
           end
         end
-      end
-
-      # Converts a cube array to a Hash
-      def cube2hash(cube_array)
-        h = {}
-        cube_array.each_with_index do |value, index|
-          h[ ith_var(index) ] = (value == 1) if value < 2
-        end
-        h
       end
 
       # Converts a bdd to a cube array
@@ -314,21 +278,21 @@ module Cudd
         one == eval(bdd, cube)
       end
 
-      # Returns one satisfying assignment for `bdd`.
-      def one_sat(bdd)
-        each_sat(bdd).first
+      # Returns one satisfying cube for `bdd`.
+      def one_cube(bdd)
+        each_cube(bdd).first
       end
 
-      # Yields each assignment that satisfies `bdd` in turn.
-      def each_sat(bdd)
-        return self.enum_for(:each_sat, bdd) unless block_given?
+      # Yields each cube that satisfies `bdd` in turn.
+      def each_cube(bdd)
+        return self.enum_for(:each_cube, bdd) unless block_given?
         return unless satisfiable?(bdd)
         size, gen = self.size, nil
         with_ffi_pointer(:pointer) do |cube_pointer|
           with_ffi_pointer(:double) do |value_pointer|
             gen = Wrapper.FirstCube(native_manager, bdd, cube_pointer, value_pointer)
             begin
-              yield cube_pointer.read_pointer.read_array_of_int(size)
+              yield cube(cube_pointer.read_pointer.read_array_of_int(size))
             end until Wrapper.NextCube(gen, cube_pointer, value_pointer)==0
           end
         end
@@ -336,9 +300,9 @@ module Cudd
         Wrapper.GenFree(gen) if gen
       end
 
-      # Returns an array with each assignement satisfying `bdd`.
-      def all_sat(bdd)
-        each_sat(bdd).to_a
+      # Returns an array with each cube satisfying `bdd`.
+      def all_cubes(bdd)
+        each_cube(bdd).to_a
       end
 
     end # module BDD

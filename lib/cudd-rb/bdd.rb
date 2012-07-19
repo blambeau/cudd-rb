@@ -41,7 +41,7 @@ module Cudd
     define_delegate_methods(:* => :and, :+ => :or, :~ => :not)
 
     define_delegate_methods(:eval, :satisfiable?, :satisfied?)
-    define_delegate_methods(:each_sat, :one_sat, :all_sat)
+    define_delegate_methods(:each_cube, :one_cube, :all_cubes)
 
     define_delegate_methods(:support)
 

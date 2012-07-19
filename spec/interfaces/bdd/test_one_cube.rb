@@ -1,12 +1,13 @@
 require 'spec_helper'
 module Cudd
   module Interfaces
-    describe BDD, "one_sat" do
+    describe BDD, "one_cube" do
 
-      subject{ formula.one_sat }
+      subject{ formula.one_cube }
 
       before do
         formula.ref
+        subject.should be_a(Cube)
       end
 
       after do
