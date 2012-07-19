@@ -10,7 +10,7 @@ module Cudd
       end
 
       after do
-        (subject.each_sat.to_a.size <= 1).should be_true
+        (subject.all_sat.size <= 1).should be_true
         formula.deref if formula
       end
 
@@ -34,7 +34,7 @@ module Cudd
         let(:formula){ x }
       
         it 'yields a bdd that has x => true as unique assignment' do
-          subject.each_sat.first.should eq(assignment(x => true))
+          subject.each_sat.first.should eq(cube(x => true))
         end
       end
       
@@ -42,7 +42,7 @@ module Cudd
         let(:formula){ !x }
       
         it 'yields a bdd that has x => false as unique assignment' do
-          subject.each_sat.first.should eq(assignment(x => false))
+          subject.each_sat.first.should eq(cube(x => false))
         end
       end
       
@@ -50,7 +50,7 @@ module Cudd
         let(:formula){ x & y }
       
         it 'returns a bdd satisfied by x => true & y => true' do
-          subject.each_sat.first.should eq(assignment(x => true, y => true))
+          subject.each_sat.first.should eq(cube(x => true, y => true))
         end
       end
       
@@ -58,7 +58,7 @@ module Cudd
         let(:formula){ x | y }
       
         it 'returns a bdd satisfied by x => true' do
-          subject.each_sat.first.should eq(assignment(x => true))
+          subject.each_sat.first.should eq(cube(x => true))
         end
       end
 
@@ -66,7 +66,7 @@ module Cudd
         let(:formula){ (x & y) | z }
       
         it 'returns a bdd satisfied by x => true, y => true' do
-          subject.each_sat.first.should eq(assignment(x => true, y => true))
+          subject.each_sat.first.should eq(cube(x => true, y => true))
         end
       end
 

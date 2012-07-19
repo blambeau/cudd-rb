@@ -17,7 +17,7 @@ module Cudd
         let(:formula){ x & y }
       
         it 'returns an assignment x => true & y => true' do
-          subject.should eq(assignment(x => true, y => true))
+          subject.should eq(cube(x => true, y => true))
         end
       end
       
@@ -25,7 +25,7 @@ module Cudd
         let(:formula){ x | y }
       
         it 'returns a bdd satisfied by x => true' do
-          subject.should eq(assignment(x => true))
+          subject.should eq(cube(x => true))
         end
       end
 

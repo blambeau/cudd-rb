@@ -6,12 +6,13 @@ module Cudd
       subject{ formula.all_sat } # formula.each_sat.to_a
 
       before do
+        x; y; z;
         formula.ref
       end
 
       after do
         subject.each do |sat|
-          sat.should be_a(Assignment)
+          sat.should be_a(Array)
           formula.satisfied?(sat).should be_true
         end
         formula.deref if formula
@@ -37,8 +38,7 @@ module Cudd
         let(:formula){ one }
 
         it 'yields one empty assignment' do
-          subject.size.should eq(1)
-          subject.first.to_hash.should eq({})
+          subject.should eq([[2,2,2]])
         end
       end
 
@@ -46,7 +46,7 @@ module Cudd
         let(:formula){ x }
 
         it 'yields one assignment with x=true' do
-          subject.map(&:to_hash).should eq([{x => true}])
+          subject.should eq([[1,2,2]])
         end
       end
 
@@ -54,7 +54,7 @@ module Cudd
         let(:formula){ !x }
 
         it 'yields one assignment with x=false' do
-          subject.map(&:to_hash).should eq([{x => false}])
+          subject.should eq([[0,2,2]])
         end
       end
 
@@ -62,7 +62,7 @@ module Cudd
         let(:formula){ x & y }
 
         it 'returns one assignment with both x and y to true' do
-          subject.map(&:to_hash).should eq([{x => true, y => true}])
+          subject.should eq([[1,1,2]])
         end
       end
 
@@ -70,7 +70,7 @@ module Cudd
         let(:formula){ x | y }
 
         it 'returns two assignments' do
-          subject.sort.map(&:to_hash).should eq([{x => false, y => true}, {x => true}])
+          subject.should eq([[0,1,2], [1,2,2]])
         end
       end
 

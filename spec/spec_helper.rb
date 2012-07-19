@@ -33,8 +33,8 @@ module Helpers
     bdd_interface.ith_var(2)
   end
 
-  def assignment(values)
-    bdd_interface.assignment(values)
+  def cube(values)
+    bdd_interface.cube(values)
   end
 
 end

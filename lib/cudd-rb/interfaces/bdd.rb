@@ -178,6 +178,28 @@ module Cudd
 
       ### COERCIONS to CubeArray #########################################################
 
+      TRUTH_VALUES_TO_012 = {true => 1, false => 0, nil => 2, 1 => 1, 0 => 0}
+
+      # Coerces `arg` to a cube array
+      def cube(arg)
+        return bdd2cube(arg) if arg.is_a?(Cudd::BDD)
+        cube = Array.new(size, 2)
+        case arg
+        when Array
+          (0...size).each do |i|
+            cube[i] = TRUTH_VALUES_TO_012[arg[i]] || 2
+          end
+        when Hash
+          arg.each_pair do |k,v|
+            next unless truth012 = TRUTH_VALUES_TO_012[v]
+            cube[k.is_a?(Cudd::BDD) ? k.index : k.to_i] = truth012
+          end
+        else
+          raise ArgumentError, "Unable to coerce `#{arg}` to a cube"
+        end
+        cube
+      end
+
       # Converts a cube array to a bdd
       #
       # @see Cudd_CubeArrayToBdd
@@ -204,23 +226,12 @@ module Cudd
 
       ### EVALUATION & SATISFIABILITY ####################################################
 
-      # Builds an Assignment instance from an Array of truth values of a Hash.
-      #
-      # Example:
-      #   interface.assignment(x => true, y => false)
-      #   interface.assignment([1, 0])
-      #
-      def assignment(input)
-        Assignment.new(self, input)
-      end
-
       # Returns the value of a BDD for a given variable assignment `input`.
       #
       # @see Cudd_Eval
-      def eval(f, assignment)
-        assignment = assignment(assignment)
+      def eval(f, cube)
         with_ffi_pointer(:int, size) do |ptr|
-          ptr.write_array_of_int(assignment.to_a)
+          ptr.write_array_of_int(cube(cube))
           bdd Wrapper.Eval(native_manager, f, ptr)
         end
       end
@@ -231,8 +242,8 @@ module Cudd
       end
 
       # Returns true if `bdd` is satisfied by a given assignment, false otherwise.
-      def satisfied?(bdd, assignment)
-        one == eval(bdd, assignment)
+      def satisfied?(bdd, cube)
+        one == eval(bdd, cube(cube))
       end
 
       # Returns one satisfying assignment for `bdd`.
@@ -249,8 +260,7 @@ module Cudd
           with_ffi_pointer(:double) do |value_pointer|
             gen = Wrapper.FirstCube(native_manager, bdd, cube_pointer, value_pointer)
             begin
-              ints = cube_pointer.read_pointer.read_array_of_int(size)
-              yield Assignment.new(self, ints)
+              yield cube_pointer.read_pointer.read_array_of_int(size)
             end until Wrapper.NextCube(gen, cube_pointer, value_pointer)==0
           end
         end
