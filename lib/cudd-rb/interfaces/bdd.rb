@@ -176,7 +176,7 @@ module Cudd
         Wrapper.Support(native_manager, bdd)
       end
 
-      ### COERCIONS to CubeArray #########################################################
+      ### COERCIONS from & to Cubes ######################################################
 
       TRUTH_VALUES_TO_012 = {true => 1, false => 0, nil => 2, 1 => 1, 0 => 0}
 
