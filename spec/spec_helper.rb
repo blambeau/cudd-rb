@@ -33,8 +33,8 @@ module Helpers
     bdd_interface.ith_var(2)
   end
 
-  def cube(values)
-    bdd_interface.cube(values)
+  def cube(*args, &bl)
+    bdd_interface.cube(*args, &bl)
   end
 
 end

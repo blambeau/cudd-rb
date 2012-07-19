@@ -213,26 +213,48 @@ module Cudd
 
       ### COERCIONS from & to Cubes ######################################################
 
-      TRUTH_VALUES_TO_012 = {true => 1, false => 0, nil => 2, 1 => 1, 0 => 0}
-
-      # Coerces `arg` to a cube array
-      def cube(arg)
-        return bdd2cube(arg) if arg.is_a?(Cudd::BDD)
-        cube = Array.new(size, 2)
-        case arg
-        when Array
-          (0...size).each do |i|
-            cube[i] = TRUTH_VALUES_TO_012[arg[i]] || 2
-          end
-        when Hash
-          arg.each_pair do |k,v|
-            next unless truth012 = TRUTH_VALUES_TO_012[v]
-            cube[k.is_a?(Cudd::BDD) ? k.index : k.to_i] = truth012
-          end
+      def truth_value_as_012(truth)
+        case truth
+        when Cudd::BDD  then is_complement?(truth) ? 0 : 1
+        when Integer    then (truth >= 0 and truth <= 1) ? truth : 2
+        when TrueClass  then 1
+        when FalseClass then 0
+        when NilClass   then 2
         else
-          raise ArgumentError, "Unable to coerce `#{arg}` to a cube"
+          raise ArgumentError, "Invalid truth value #{truth}"
         end
-        cube
+      end
+
+      # Coerces `arg` to a cube.
+      #
+      # Example (suppose three BDD variables: x, y and z):
+      #
+      #   cube([1, 0, 2])              # => [1, 0, 2]
+      #   cube([1, 0])                 # same
+      #   cube([true, false])          # same
+      #   cube([x, !y])                # same
+      #   cube(x => true, y => false)  # same
+      #
+      def cube(arg, as = :a012)
+        a012 = nil
+        if arg.is_a?(Cudd::BDD)
+          a012 = bdd2cube(arg)
+        else
+          a012 = Array.new(size, 2)
+          enum = arg.is_a?(Hash) ? arg.each_pair : arg.each_with_index
+          enum.each do |k,v|
+            k,v = v,k unless arg.is_a?(Hash)
+            index = [k, v].find{|x| x.is_a?(Cudd::BDD) }.index rescue k
+            a012[index] = truth_value_as_012(v)
+          end
+        end
+        case as
+        when :a012   then a012
+        when :bdd    then cube2bdd(a012)
+        when :hash   then cube2hash(a012)
+        else
+          raise ArgumentError, "Invalid 'as' option `#{as}`"
+        end
       end
 
       # Converts a cube array to a bdd
@@ -245,6 +267,15 @@ module Cudd
             raise Cudd::Error, "Cudd_CubeArrayToBdd failed on `#{cube_array.inspect}`"
           end
         end
+      end
+
+      # Converts a cube array to a Hash
+      def cube2hash(cube_array)
+        h = {}
+        cube_array.each_with_index do |value, index|
+          h[ ith_var(index) ] = (value == 1) if value < 2
+        end
+        h
       end
 
       # Converts a bdd to a cube array
@@ -268,7 +299,7 @@ module Cudd
       # @see Cudd_Eval
       def eval(f, cube)
         with_ffi_pointer(:int, size) do |ptr|
-          ptr.write_array_of_int(cube(cube))
+          ptr.write_array_of_int(cube(cube, :a012))
           bdd Wrapper.Eval(native_manager, f, ptr)
         end
       end
@@ -280,7 +311,7 @@ module Cudd
 
       # Returns true if `bdd` is satisfied by a given assignment, false otherwise.
       def satisfied?(bdd, cube)
-        one == eval(bdd, cube(cube))
+        one == eval(bdd, cube)
       end
 
       # Returns one satisfying assignment for `bdd`.
