@@ -28,5 +28,17 @@ module Cudd
       it{ should eq(y) }
     end
 
+    context 'when it is a complex bdd' do
+      let(:cube){ x.xor(y)    }
+
+      it 'should raise a NotACubeError' do
+        pending{
+          lambda{
+            subject
+          }.should raise_error(NotACubeError)
+        }
+      end
+    end
+
   end
 end
