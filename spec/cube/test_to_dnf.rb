@@ -40,5 +40,16 @@ module Cudd
       end
     end
 
+    context 'on variables that respond to to_dnf' do
+      let(:var){ Object.new }
+      let(:u){ bdd_interface.new_var(var) }
+      let(:c){ cube(u => true) }
+
+      it 'uses provided names' do
+        def var.to_dnf; "foo"; end
+        subject.should eq("foo")
+      end
+    end
+
   end
 end

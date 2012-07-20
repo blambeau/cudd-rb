@@ -63,9 +63,10 @@ module Cudd
       to_a012.each_with_index do |val, index|
         next if val == 2
         name = interface.ith_var(index).var_name
+        name = name.respond_to?(:to_dnf) ? name.to_dnf : name.to_s
         buf << " & " unless buf.empty?
         buf << "!" if val==0
-        buf << name.to_s
+        buf << name
       end
       buf
     end
