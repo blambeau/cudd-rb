@@ -6,6 +6,14 @@ module Cudd
 
     before{ x; y; z  }
 
+    context 'on an empty cube' do
+      let(:c){ cube([]) }
+
+      it "returns ONE" do
+        subject.should eq(one)
+      end
+    end
+
     context 'on x' do
       let(:c){ cube(x => true) }
 
