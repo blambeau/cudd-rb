@@ -62,10 +62,7 @@ module Cudd
     def to_s
       "BDD(#{address})"
     end
-
-    def inspect
-      "BDD(#{to_dnf})"
-    end
+    alias :inspect :to_s
 
   end # module BDD
 end # module Cudd
