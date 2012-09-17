@@ -31,7 +31,7 @@ module Cudd
 
       context 'on an complex formula' do
         let(:bdd){ (x | y) & z }
-        it{ should eq("(!v0 & v1 & v2) | (v0 & v2)") }
+        it{ should eq("(!(v0) & v1 & v2) | (v0 & v2)") }
       end
 
     end

@@ -18,7 +18,7 @@ module Cudd
       let(:c){ cube(x => false) }
 
       it 'uses default names' do
-        subject.should eq("!v0")
+        subject.should eq("!(v0)")
       end
     end
 
@@ -26,7 +26,7 @@ module Cudd
       let(:c){ cube(x => true, y => false) }
 
       it 'uses default names' do
-        subject.should eq("v0 & !v1")
+        subject.should eq("v0 & !(v1)")
       end
     end
 
@@ -36,7 +36,7 @@ module Cudd
       let(:c){ cube(u => true, v => false) }
 
       it 'uses provided names' do
-        subject.should eq("u & !v")
+        subject.should eq("u & !(v)")
       end
     end
 

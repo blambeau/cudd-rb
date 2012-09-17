@@ -58,15 +58,16 @@ module Cudd
       h
     end
 
-    def to_dnf
+    def to_dnf(operators = {:not => :'!', :or => :'|', :and => :'&'})
       buf = ""
       to_a012.each_with_index do |val, index|
         next if val == 2
         name = interface.ith_var(index).var_name
         name = name.respond_to?(:to_dnf) ? name.to_dnf : name.to_s
-        buf << " & " unless buf.empty?
-        buf << "!" if val==0
+        buf << " #{operators[:and]} " unless buf.empty?
+        buf << "#{operators[:not]}("  if val==0
         buf << name
+        buf << ")" if val==0
       end
       buf
     end

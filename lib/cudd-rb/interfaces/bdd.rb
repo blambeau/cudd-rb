@@ -254,14 +254,14 @@ module Cudd
       end
 
       # Converts a bdd to a disjunctive normal form
-      def bdd2dnf(bdd)
+      def bdd2dnf(bdd, operators = {:not => :'!', :or => :'|', :and => :'&'})
         return "true"  if bdd==one
         return "false" if bdd==zero
         buf, size = "", 0
         each_cube(bdd) do |cube|
           size += 1
-          buf << " | " unless buf.empty?
-          buf << "(" << cube.to_dnf << ")"
+          buf << " #{operators[:or]} " unless buf.empty?
+          buf << "(" << cube.to_dnf(operators) << ")"
         end
         size == 1 ? buf[1...-1] : buf
       end
