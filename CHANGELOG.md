@@ -1,3 +1,7 @@
+# 0.0.3 / FIX ME
+
+* recursive now defaults to false in Interface::BDD#deref
+
 # 0.0.2 / 2012-10-16
 
 * Add optional parameter to BDD#to_dnf that specifies operator literals.

@@ -31,7 +31,7 @@ module Cudd
       # Uses `Cudd_RecursiveDeref` if `recursive` is true (defauts), decreasing
       # reference counts of all children of `f`. Uses `Cudd_Deref` otherwise
       # (use only if your are sure).
-      def deref(f, recursive = true)
+      def deref(f, recursive = false)
         recursive ? Wrapper.RecursiveDeref(native_manager, f) : Wrapper.Deref(f)
         f
       end
