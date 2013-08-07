@@ -2,6 +2,7 @@
 
 * `recursive` param now defaults to false in `Interface::BDD#deref`
 * Add native binding to CUDD's `ReduceHeap` on BDDs
+* Add native binding to CUDD's `bddPrintCover` on BDDs
 
 # 0.0.2 / 2012-10-16
 

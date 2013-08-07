@@ -319,6 +319,12 @@ module Cudd
         each_cube(bdd).to_a
       end
 
+      ### OUTPUT ##############################################################
+
+      def print_cover(bdd)
+        Wrapper.bddPrintCover(native_manager, bdd, bdd)
+      end
+
     private
 
       # Yields the block with a cube encoded by a BDD. If the latter must be

@@ -64,6 +64,7 @@ module Cudd
     cudd_function :bddNor,         THREE_POINTERS
     cudd_function :bddXor,         THREE_POINTERS
     cudd_function :bddXnor,        THREE_POINTERS
+    cudd_function :bddPrintCover,  THREE_POINTERS
 
     cudd_function :Cofactor,        THREE_POINTERS
     cudd_function :bddRestrict,     THREE_POINTERS
@@ -80,6 +81,7 @@ module Cudd
     cudd_function :FirstCube,      FOUR_POINTERS
     cudd_function :NextCube,       THREE_POINTERS, :int
     cudd_function :GenFree,        ONE_POINTER, :int
+
 
   end # module Wrapper
 end # module Cudd

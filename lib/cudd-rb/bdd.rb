@@ -39,6 +39,7 @@ module Cudd
     define_delegate_methods(:and, :or, :not, :nand, :nor, :xor, :xnor)
     define_delegate_methods(:& => :and, :| => :or, :! => :not)
     define_delegate_methods(:* => :and, :+ => :or, :~ => :not)
+    define_delegate_methods(:print_cover)
 
     define_delegate_methods(:cofactor, :restrict)
     define_delegate_methods(:exist_abstract, :univ_abstract, :exist, :univ, :forall)
