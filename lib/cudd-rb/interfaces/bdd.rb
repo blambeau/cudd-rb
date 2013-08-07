@@ -36,6 +36,12 @@ module Cudd
         f
       end
 
+      ### MEMORY MANAGEMENT ##############################################################
+
+      def reduce_heap(heuristic, minsize)
+        Wrapper.ReduceHeap(native_manager, heuristic, minsize)
+      end
+
       ### VARS ###########################################################################
 
       # Returns the variable names

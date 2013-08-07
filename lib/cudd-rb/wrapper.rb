@@ -3,6 +3,31 @@ module Cudd
     extend FFI::Library
     ffi_lib ['cudd', 'libcudd'] + Dir[File.expand_path('../../../ext/*', __FILE__)]
 
+    enum :reordering_heuristics, [
+      :same,
+      :none,
+      :random,
+      :random_pivot,
+      :sift,
+      :sift_converge,
+      :summ_sift,
+      :symm_sift_conv,
+      :window2,
+      :window3,
+      :window4,
+      :window2_conv,
+      :window3_conv,
+      :window4_conv,
+      :group_sift,
+      :group_sift_conv,
+      :annealing,
+      :genetic,
+      :linear,
+      :linear_converge,
+      :lazy_sift,
+      :exact
+    ]
+
     ONE_POINTER    = [ :pointer ]
     TWO_POINTERS   = [ :pointer, :pointer ]
     THREE_POINTERS = [ :pointer, :pointer, :pointer ]
@@ -19,6 +44,8 @@ module Cudd
     cudd_function :Ref,            ONE_POINTER,  :void
     cudd_function :Deref,          ONE_POINTER,  :void
     cudd_function :RecursiveDeref, TWO_POINTERS, :void
+
+    cudd_function :ReduceHeap,     [ :pointer, :reordering_heuristics, :int ], :int
 
     cudd_function :ReadSize,       ONE_POINTER,  :int
     cudd_function :NodeReadIndex,  ONE_POINTER,  :int
